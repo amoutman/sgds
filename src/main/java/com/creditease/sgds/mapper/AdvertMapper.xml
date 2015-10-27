@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditease.sgds.master.dao.AdvertMapper">
+    <select id="getAdvertList" parameterType="Map" resultType="com.creditease.sgds.master.bean.Advertisement">
+    	select * from tb_master_advertisement 
+    	        where 1=1
+    	        <if test="online_date != null and online_date !='' ">
+    	        	and str_to_date(online_date,'%Y-%m-%d') &lt;= #{online_date}
+    	        </if>
+    	        <if test="offline_date != null and offline_date !='' ">
+    	        	and str_to_date(offline_date,'%Y-%m-%d') &lt;= #{offline_date}
+    	        </if>
+    	        <if test="status != null and status !='' ">
+    	        	and status = #{status}
+    	        </if>
+    </select>
+</mapper>
