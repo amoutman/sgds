@@ -5,4 +5,5 @@ Go!
 Go!
 Go!
 Game Start!
-yuanzhao
+yuanzhao dadu
+
