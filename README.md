@@ -5,4 +5,4 @@ Go!
 Go!
 Go!
 Game Start!
-yuanzhao n
+yuanzhao dadu 
