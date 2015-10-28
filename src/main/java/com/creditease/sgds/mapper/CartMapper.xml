@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditease.sgds.cart.dao.CartMapper">
+	<select id="getCartDetailsList" parameterType="Map" resultType="com.creditease.sgds.cart.bean.CartDetails">
+		select a.id id,
+			   a.shopping_cart_id shoppingCartId,
+			   a.product_id productId,
+			   a.count count,
+			   b.product_name productName,
+			   b.product_master_pic productMasterPic,
+			   c.unit unit,
+			   c.price price	
+		  from tb_shopping_cart_details a,
+		       tb_product b,
+		       tb_product_buy_ways c
+		 where a.product_id = b.id
+		   and a.product_id = c.product_id
+		   and a.shopping_cart_id = #{cartId}
+	</select>
+	<select id="getCartById" parameterType="String" resultType="com.creditease.sgds.cart.bean.Cart">
+		select id id,
+		       user_id userId,
+		       settle_amount settleAmount
+		  from tb_shopping_cart
+		 where user_id = #{id}  
+	</select>
+    <insert id="insertCart" parameterType="com.creditease.sgds.cart.bean.Cart">
+    	insert into tb_shopping_cart (id,user_id,settle_amount,created_date) values (#{id},#{userId},#{settleAmount},#{createdDate})
+    </insert>
+    <insert id="insertCartDetails" parameterType="com.creditease.sgds.cart.bean.CartDetails">
+    	insert into tb_shopping_cart_details (id,shopping_cart_id,product_id,count) values (#{id},#{shoppingCartId},#{productId},#{count})
+    </insert>
+</mapper>

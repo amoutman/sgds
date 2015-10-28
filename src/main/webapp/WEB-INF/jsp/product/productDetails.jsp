@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <div class="pro-com">
                 <div class="pro-info clearfix">
                   <div class="pro-left">
-                      <span class="h2">${product.productName}</span>
+                      <span class="h2">${product.productName}<input type="hidden" name="productId" value="${product.id }"/></span>
                       <span class="weight">${product.unit}</span>
                       <span class="num"><i></i>已售：33413</span>
                   </div>
@@ -87,7 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <span class="cartNum" style="display:none">10</span>
              </span>
              </a>
-             <a href="javascript:void()" class="btnYello">加入购物车</a>
+             <a href="" onClick="addProductToCart()" class="btnYello">加入购物车</a>
              <a href="" class="btnPink">立即购买</a>
           </div>
     <!-- 按钮 end -->
@@ -107,5 +107,9 @@ $(function() {
   });
   
 });
+
+function addProductToCart(){
+	//var productId = $.
+}
 </script>
 </html>
