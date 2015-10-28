@@ -4,3 +4,4 @@ Are you ready?
 Go!
 Go!
 Go!
+Game Start!
