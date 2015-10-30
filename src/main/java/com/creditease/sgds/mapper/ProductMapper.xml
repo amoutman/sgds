@@ -36,6 +36,21 @@
     	      and a.id = #{id}
     </select>
     
+   <select id="getProductDetailsByIds" parameterType="List" resultType="com.creditease.sgds.product.bean.Product">
+    	select a.id id,
+    		   a.product_name productName,
+    		   a.product_master_pic_path productMasterPicPath,
+    		   b.price price,
+    		   b.unit unit
+    	from tb_product a,
+    		 tb_product_buy_ways b
+    	where a.id = b.product_id
+    	  and a.id in 
+    	  <foreach items="id" index="index" collection="list" open="(" separator="," close=")">
+    	  #{id}
+    	  </foreach>
+    </select>
+    
     <select id="getProductByCategoryId" parameterType="String" resultType="com.creditease.sgds.product.bean.Product">
     	select a.id id,
     		   a.product_name productName,
