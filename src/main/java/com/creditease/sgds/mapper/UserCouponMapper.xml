@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditease.sgds.user.dao.UserCouponMapper">
+   <resultMap id="UserCouponMap" type="com.creditease.sgds.user.bean.UserCoupon" >
+    <result column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="coupon_no" property="couponNo" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="exp_date" property="expDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="desc_for_get" property="descForGet" jdbcType="VARCHAR" />
+    <result column="desc_for_used" property="descForUsed" jdbcType="VARCHAR" />
+    <result column="get_datetime" property="getDatetime" jdbcType="TIMESTAMP" />
+    <result column="used_datetime" property="usedDatetime" jdbcType="TIMESTAMP" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getUserCouponList" parameterType="Map" resultMap="UserCouponMap">
+  		select *
+  		  from tb_user_coupon
+  		 where user_id = #{userId}
+  		   and status = #{status}
+  		   and str_to_date(exp_date,'%Y-%m-%d') &lt;= str_to_date(sysdate(),'%Y-%m-%d')
+  </select>
+  <select id="getUserCouponCount" parameterType="Map" resultType="Integer">
+  		select count(id)
+  		  from tb_user_coupon
+  		 where user_id = #{userId}
+  		   and status = #{status}
+  		   and str_to_date(exp_date,'%Y-%m-%d') &lt;= str_to_date(sysdate(),'%Y-%m-%d')
+  </select>
+</mapper>

@@ -16,8 +16,16 @@ public interface CartService {
 	
 	public void deleteCart(String cartId);
 	
+	public void updateCart(Cart cart);
+	
 	public void insertCartDetails(CartDetails cd);
 	
+	public void insertCartDetailsList(List<CartDetails> cdList);
+	
 	public void deleteCartDetails(String id);
+	
+	public void deleteCartDetailsList(List<String> ids);
+	
+	public void updateCartDetails(CartDetails cd);
 
 }

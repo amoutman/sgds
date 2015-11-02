@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditease.sgds.user.dao.ReceiverMapper">
+    <resultMap id="BaseResultMap" type="com.creditease.sgds.user.bean.Receiver" >
+       <id column="id" property="id" jdbcType="CHAR" />
+       <result column="user_id" property="userId" jdbcType="CHAR" />
+       <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+       <result column="receiver_sex" property="receiverSex" jdbcType="INTEGER" />
+       <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+       <result column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
+       <result column="receiver_region" property="receiverRegion" jdbcType="VARCHAR" />
+       <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+       <result column="note" property="note" jdbcType="VARCHAR" />
+       <result column="master_or_not" property="masterOrNot" jdbcType="INTEGER" />
+       <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+       <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, user_id, receiver_name, receiver_sex, receiver_mobile, receiver_province, receiver_region, 
+        receiver_address, note, master_or_not, created_date, updated_date
+    </sql>
+    <select id="getReceiverListByUserId" parameterType="String" resultMap="BaseResultMap">
+    	select 
+		   <include refid="Base_Column_List" />
+    	  from tb_receiver
+    	 where user_id = #{userId}         
+    </select>
+    <insert id="insertReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
+    insert into tb_receiver
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="receiverSex != null" >
+        receiver_sex,
+      </if>
+      <if test="receiverMobile != null" >
+        receiver_mobile,
+      </if>
+      <if test="receiverProvince != null" >
+        receiver_province,
+      </if>
+      <if test="receiverRegion != null" >
+        receiver_region,
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="masterOrNot != null" >
+        master_or_not,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="updatedDate != null" >
+        updated_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverSex != null" >
+        #{receiverSex,jdbcType=INTEGER},
+      </if>
+      <if test="receiverMobile != null" >
+        #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null" >
+        #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverRegion != null" >
+        #{receiverRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="masterOrNot != null" >
+        #{masterOrNot,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
+    update tb_receiver
+    <set >
+      <if test="receiverName != null" >
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverSex != null" >
+        receiver_sex = #{receiverSex,jdbcType=INTEGER},
+      </if>
+      <if test="receiverMobile != null" >
+        receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null" >
+        receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverRegion != null" >
+        receiver_region = #{receiverRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="masterOrNot != null" >
+        master_or_not = #{masterOrNot,jdbcType=INTEGER},
+      </if>
+      <if test="updatedDate != null" >
+        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateDefault" parameterType="String">
+  	update tb_receiver set master_or_not = 0 where id = #{id}
+  </update>
+  <update id="updateUnDefault">
+  	update tb_receiver set master_or_not = 1 where master_or_not = 0
+  </update>
+</mapper>

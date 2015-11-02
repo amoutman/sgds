@@ -29,7 +29,29 @@
     <insert id="insertCart" parameterType="com.creditease.sgds.cart.bean.Cart">
     	insert into tb_shopping_cart (id,user_id,settle_amount,created_date) values (#{id},#{userId},#{settleAmount},#{createdDate})
     </insert>
+    <update id="updateCart" parameterType="com.creditease.sgds.cart.bean.Cart">
+    	update tb_shopping_cart set settle_amount = #{settleAmount} ,updated_date = #{updatedDate} where id = #{id}
+    </update>
     <insert id="insertCartDetails" parameterType="com.creditease.sgds.cart.bean.CartDetails">
     	insert into tb_shopping_cart_details (id,shopping_cart_id,product_id,count) values (#{id},#{shoppingCartId},#{productId},#{count})
     </insert>
+    <insert id="insertCartDetailsList" parameterType="List">
+    	insert into tb_shopping_cart_details (id,shopping_cart_id,product_id,count) values
+    	<foreach collection="list" item="cd" index="index" separator="," > 
+    	(#{cd.id},#{cd.shoppingCartId},#{cd.productId},#{cd.count})
+    	</foreach>
+    </insert>
+    <update id="updateCartDetails"  parameterType="com.creditease.sgds.cart.bean.CartDetails">
+    	update tb_shopping_cart_details set count = #{count} where id = #{id}
+    </update>
+    <delete id="deleteCartDetails" parameterType="String">
+    	Delete from tb_shopping_cart_details where id = #{id}
+    </delete>
+    <delete id="deleteCartDetailsList" parameterType="List">
+    	Delete from tb_shopping_cart_details 
+    	where id in 
+    	<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+    	  #{id}
+    	 </foreach> 
+    </delete>
 </mapper>
