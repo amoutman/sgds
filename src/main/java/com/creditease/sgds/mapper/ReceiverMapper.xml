@@ -120,7 +120,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
+  <update id="updateReceiver" parameterType="com.creditease.sgds.user.model.Receiver" >
     update tb_receiver
     <set >
       <if test="receiverName != null" >

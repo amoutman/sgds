@@ -139,6 +139,11 @@ public class OrderController extends BaseController{
 		}
 	}
 	
+	@RequestMapping(value = "/createAddr",  method = RequestMethod.POST)
+	public ModelAndView createAddress(String productIds){
+		return null;
+	}
+	
 	@RequestMapping(value = "/orderCommit",  method = RequestMethod.POST)
 	public ModelAndView orderCommit(Order order) {
 		try {
