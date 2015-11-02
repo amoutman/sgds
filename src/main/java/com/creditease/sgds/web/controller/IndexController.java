@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class IndexController {
 	private HotProductService hotProductService;
 	
 	@RequestMapping("/toIndexPage")
-	public ModelAndView toIndexPage(){
+	public ModelAndView toIndexPage(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		Map<String,Object> aMap = new HashMap<String,Object>();
 		aMap.put("status", 0);

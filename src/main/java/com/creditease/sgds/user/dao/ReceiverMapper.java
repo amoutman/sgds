@@ -5,19 +5,23 @@ import java.util.List;
 import com.creditease.sgds.user.model.Receiver;
 
 public interface ReceiverMapper {
-    int deleteByPrimaryKey(String id);
-
-    int insert(Receiver record);
-
-    int insertSelective(Receiver record);
-
-    Receiver selectByPrimaryKey(String id);
-
-    int updateByPrimaryKeySelective(Receiver record);
-
-    int updateByPrimaryKey(Receiver record);
-    
+	
     Receiver selectDefReceiverByUserId(String userId);
     
-    List<Receiver> selectReceiversByUserId(String userId);
+	public Receiver getReceiverById(String id);
+	
+	public Receiver getReceiverByUserId(String userId);
+	
+	public List<Receiver> getReceiverListByUserId(String userId);
+	
+	public void insertReceiver(Receiver receiver);
+	
+	public void updateReceiver(Receiver receiver);
+	
+	public void deleteReceiver(String receiverId);
+	
+	public void updateDefault(String id);
+	
+	public void updateUnDefault(String userId);
+
 }

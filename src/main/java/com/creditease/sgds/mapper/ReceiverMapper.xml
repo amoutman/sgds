@@ -19,29 +19,29 @@
     id, user_id, receiver_name, receiver_sex, receiver_mobile, receiver_province, receiver_region, 
     receiver_address, note, master_or_not, created_date, updated_date
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="getReceiverById" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from tb_receiver
     where id = #{id,jdbcType=CHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteReceiver" parameterType="java.lang.String" >
     delete from tb_receiver
     where id = #{id,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="com.creditease.sgds.user.model.Receiver" >
-    insert into tb_receiver (id, user_id, receiver_name, 
-      receiver_sex, receiver_mobile, receiver_province, 
-      receiver_region, receiver_address, note, 
-      master_or_not, created_date, updated_date
-      )
-    values (#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{receiverName,jdbcType=VARCHAR}, 
-      #{receiverSex,jdbcType=INTEGER}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
-      #{receiverRegion,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
-      #{masterOrNot,jdbcType=INTEGER}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedDate,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.creditease.sgds.user.model.Receiver" >
+  <select id="selectDefReceiverByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_receiver
+    where user_id = #{userId,jdbcType=CHAR} and master_or_not = 0
+  </select>
+   <select id="getReceiverListByUserId" parameterType="String" resultMap="BaseResultMap">
+   	select 
+	   <include refid="Base_Column_List" />
+   	  from tb_receiver
+   	 where user_id = #{userId,jdbcType=CHAR} order by master_or_not        
+   </select>
+    <insert id="insertReceiver" parameterType="com.creditease.sgds.user.model.Receiver" >
     insert into tb_receiver
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -120,12 +120,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.user.model.Receiver" >
+  <update id="updateReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
     update tb_receiver
     <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=CHAR},
-      </if>
       <if test="receiverName != null" >
         receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
@@ -150,40 +147,16 @@
       <if test="masterOrNot != null" >
         master_or_not = #{masterOrNot,jdbcType=INTEGER},
       </if>
-      <if test="createdDate != null" >
-        created_date = #{createdDate,jdbcType=TIMESTAMP},
-      </if>
       <if test="updatedDate != null" >
         updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.user.model.Receiver" >
-    update tb_receiver
-    set user_id = #{userId,jdbcType=CHAR},
-      receiver_name = #{receiverName,jdbcType=VARCHAR},
-      receiver_sex = #{receiverSex,jdbcType=INTEGER},
-      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
-      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
-      receiver_region = #{receiverRegion,jdbcType=VARCHAR},
-      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
-      note = #{note,jdbcType=VARCHAR},
-      master_or_not = #{masterOrNot,jdbcType=INTEGER},
-      created_date = #{createdDate,jdbcType=TIMESTAMP},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=CHAR}
+  <update id="updateDefault" parameterType="String">
+  	update tb_receiver set master_or_not = 0 where id = #{id}
   </update>
-  <select id="selectDefReceiverByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_receiver
-    where user_id = #{userId,jdbcType=CHAR} and master_or_not = 0
-  </select>
-   <select id="selectReceiversByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_receiver
-    where user_id = #{userId,jdbcType=CHAR} order by master_or_not
-  </select>
+  <update id="updateUnDefault">
+  	update tb_receiver set master_or_not = 1 where master_or_not = 0
+  </update>
 </mapper>

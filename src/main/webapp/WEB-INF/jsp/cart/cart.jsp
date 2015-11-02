@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,10 +14,10 @@
 <meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
 <meta content="telephone=no" name="format-detection" /> 
 <title>购物车</title>
-<link rel="stylesheet" type="text/css" href="css/global.css" />
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/global.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/style.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.9.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
 <style>
 .app-nav{ max-width:100%;}
 </style>
@@ -25,94 +30,40 @@
 			</div>
             <h2>订单列表</h2>
       </div>
-       
-       
+     
        <!--产品列表 start-->
        <ul class="cart-group clearfix">
+       <c:forEach var="cd" items="${cart.cdList}">
               <li class="ware-item">
-                <div class="ware-img"><a href=""><img src="images/demo06.jpg" alt="水果" /></a></div>
+                <div class="ware-img"><a href=""><img src="${pageContext.request.contextPath}/resource/${cd.productMasterPic }" alt="水果" /></a></div>
                 <div class="ware-info">
                    <div class="ware-t-box clearfix">
                        <div class="ware-title">
-                           <span class="h2">澳大利亚进口脐橙</span>
-                           <span class="weight">500g/1份</span>
+                           <span class="h2">${cd.productName }</span>
+                           <span class="weight">${cd.unit }</span>
                        </div>
                        <div class="checkbox fr">
-						<i class="ico-checkbox"></i>
+                       <input type="hidden" name="productId" id="productId" value="${cd.productId }"/>
+                       <input type="hidden" name="cdId" id="cdId" value="${cd.id}"/>
+                       <li class="ico-checkbox" name="isCheck"></li>
 			          </div>
                    </div>
                    <div class="cart-bar">
                    
                      <div class="price"> 
                        <span class="price-sign">¥</span>
-                       <span class="price-num">36.8</span>
+                       <span class="price-num">${cd.price }</span>
                      </div>
                       <div class="detai-num">
-                         <a href="javascript:void(0);" class="num-math pull-left" opr="jian"><i>-</i></a>
-                         <input type="text" value="1" class="num-input" id="7">
-                         <a href="javascript:void(0);" class="num-math pull-right" opr="jia"><i>+</i></a>
+                         <a href="javascript:void(0);" onClick="addCount(this)" class="num-math pull-left" opr="jian"><i>-</i></a>
+                         <input type="text" value="${cd.count }" class="num-input" id="count">
+                         <a href="javascript:void(0);" onClick="subCount(this)" class="num-math pull-right" opr="jia"><i>+</i></a>
                       </div>
                       
                    </div>
                 </div>
               </li>
-              
-              <li class="ware-item">
-                <div class="ware-img"><a href=""><img src="images/demo06.jpg" alt="水果" /></a></div>
-                <div class="ware-info">
-                   <div class="ware-t-box clearfix">
-                       <div class="ware-title">
-                           <span class="h2">澳大利亚进口脐橙</span>
-                           <span class="weight">500g/1份</span>
-                       </div>
-                       <div class="checkbox fr">
-						<i class="ico-checkbox"></i>
-			          </div>
-                   </div>
-                   <div class="cart-bar">
-                   
-                     <div class="price"> 
-                       <span class="price-sign">¥</span>
-                       <span class="price-num">36.8</span>
-                     </div>
-                      <div class="detai-num">
-                         <a href="javascript:void(0);" class="num-math pull-left" opr="jian"><i>-</i></a>
-                         <input type="text" value="1" class="num-input" id="7">
-                         <a href="javascript:void(0);" class="num-math pull-right" opr="jia"><i>+</i></a>
-                      </div>
-                      
-                   </div>
-                </div>
-              </li>
-              
-              <li class="ware-item">
-                <div class="ware-img"><a href=""><img src="images/demo06.jpg" alt="水果" /></a></div>
-                <div class="ware-info">
-                   <div class="ware-t-box clearfix">
-                       <div class="ware-title">
-                           <span class="h2">澳大利亚进口脐橙</span>
-                           <span class="weight">500g/1份</span>
-                       </div>
-                       <div class="checkbox fr">
-						<i class="ico-checkbox"></i>
-			          </div>
-                   </div>
-                   <div class="cart-bar">
-                   
-                     <div class="price"> 
-                       <span class="price-sign">¥</span>
-                       <span class="price-num">36.8</span>
-                     </div>
-                      <div class="detai-num">
-                         <a href="javascript:void(0);" class="num-math pull-left" opr="jian"><i>-</i></a>
-                         <input type="text" value="1" class="num-input" id="7">
-                         <a href="javascript:void(0);" class="num-math pull-right" opr="jia"><i>+</i></a>
-                      </div>
-                      
-                   </div>
-                </div>
-              </li>
-              
+         </c:forEach>     
            </ul>
            <!--产品列表 end-->
 
@@ -138,11 +89,11 @@
              <a href="" class="btnPrice"> 
                   <span class="label">总价：</span>
                   <span class="price-sign">¥</span>
-                  <span class="price-num">36.8</span>
+                  <span class="price-num">${cart.settleAmount}</span>
                   <span class="line"></span>
              </a>
-             <a href="" class="btnDelete">删  除</a>
-             <a href="" class="btnPink">立即购买</a>
+             <a href="javascript:void(0);" class="btnDelete" onClick="deleteProduct()">删  除</a>
+             <a href="javascript:void(0);" class="btnPink">立即购买<input type="hidden" id="cartId" name="cartId" value="${cart.id }" /></a>
    </div>
    <!-- 按钮 end -->
    
@@ -163,4 +114,92 @@
     </nav>
     <!--底部导航 end-->
 </body>
+<script type="text/javascript">
+	function deleteProduct(){
+		var productIds = "";
+		var cdIds = "";
+		$("li[name='isCheck']").each(function(){
+			if($(this).hasClass("checked") == true){
+				if(productIds == ""){
+					productIds = $(this).parent().find("#productId").val();
+				}else{
+					productIds = productIds +"," +$(this).parent().find("#productId").val();
+				}
+				
+				if(cdIds == ""){
+					cdIds = $(this).parent().find("#cdId").val();
+				}else{
+					cdIds = cdIds +"," +$(this).parent().find("#cdId").val();
+				}
+				
+			}
+		});
+		if(confirm("确定要删除这些商品？")){
+			$.post{
+				"cart/deleteProductFromCart",
+				{
+					"productIds":productIds,
+					"cdIds":cdIds
+				},
+				function(data){
+					if(true){
+						$("li[name='isCheck']").each(function(){
+							$(this).parents(".ware-item").html("");
+						});
+					}
+				},
+				"json"
+				}
+			}
+	}
+	
+	function addCount(obj){
+		var currentCount = $(obj).parent().find("#count").val();
+		var aCount = currentCount + 1;
+		var cdId = $(obj).parents("。ware-item").find("#cdId").val();
+		$.post{
+			"cart/calProductCount",
+			{
+				"cdId":cdId,
+				"count":aCount,
+				"type":"add"
+			},
+			function(data){
+				if(true){
+					$(obj).parent().find("#count").val(aCount);
+				}
+			},
+			"json"
+		}
+		
+	}
+	
+	function subCount(obj){
+		var currentCount = $(obj).parent().find("#count").val();
+		if(currentCount == 1){
+			alert("商品数量至少为1!");
+			return;
+		}else{
+			var aCount = currentCount - 1;
+			var cdId = $(obj).parents("。ware-item").find("#cdId").val();
+			$.post{
+				"cart/calProductCount",
+				{
+					"cdId":cdId,
+					"count":aCount,
+					"type":"sub"
+				},
+				function(data){
+					if(true){
+						$(obj).parent().find("#count").val(aCount);
+					}
+				},
+				"json"
+		}
+		
+		}
+		
+	}
+		
+</script>
 </html>

@@ -81,17 +81,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<Receiver> selectReceiversByUserId(String userId) throws Exception {
-		return receiverMapper.selectReceiversByUserId(userId);
+		return receiverMapper.getReceiverListByUserId(userId);
 	}
 
 	@Override
 	public Receiver selectReceiverById(String id) throws Exception {
-		return receiverMapper.selectByPrimaryKey(id);
+		return receiverMapper.getReceiverById(id);
 	}
 
 	@Override
 	public void updateReceiverById(Receiver receiver) throws Exception {
-		receiverMapper.updateByPrimaryKeySelective(receiver);
+		receiverMapper.updateReceiver(receiver);
 	}
 
 }

@@ -44,17 +44,33 @@ public class CartServiceImpl implements CartService {
 		// TODO Auto-generated method stub
 		cartMapper.deleteCart(cartId);
 	}
+	
+	public void updateCart(Cart cart){
+		cartMapper.updateCart(cart);
+	}
 
 	@Override
 	public void insertCartDetails(CartDetails cd) {
 		// TODO Auto-generated method stub
 		cartMapper.insertCartDetails(cd);
 	}
+	
+	public void insertCartDetailsList(List<CartDetails> cdList){
+		cartMapper.insertCartDetailsList(cdList);
+	}
 
 	@Override
 	public void deleteCartDetails(String id) {
 		// TODO Auto-generated method stub
 		cartMapper.deleteCartDetails(id);
+	}
+	
+	public void deleteCartDetailsList(List<String> ids){
+		cartMapper.deleteCartDetailsList(ids);
+	}
+	
+	public void updateCartDetails(CartDetails cd){
+		cartMapper.updateCartDetails(cd);
 	}
 
 	@Override
