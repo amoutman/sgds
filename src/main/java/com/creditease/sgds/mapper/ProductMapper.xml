@@ -46,7 +46,7 @@
     		 tb_product_buy_ways b
     	where a.id = b.product_id
     	  and a.id in 
-    	  <foreach items="id" index="index" collection="list" open="(" separator="," close=")">
+    	  <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
     	  #{id}
     	  </foreach>
     </select>

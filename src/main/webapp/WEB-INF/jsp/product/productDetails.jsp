@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                <div class="pro-com">
                 <div class="pro-info clearfix">
                   <div class="pro-left">
-                      <span class="h2">${product.productName}<input type="hidden" name="productId" value="${product.id }"/></span>
+                      <span class="h2">${product.productName}<input type="hidden" name="productId" id="productId" value="${product.id }"/></span>
                       <span class="weight">${product.unit}</span>
                       <span class="num"><i></i>已售：33413</span>
                   </div>
@@ -84,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!-- 按钮 start -->
     <div class="productBtn">
              <a href=""><span class="cartIcon" id="end">
-               <span class="cartNum" style="display:none">10</span>
+               <span class="cartNum" id="cartNum" style="display:none">10</span>
              </span>
              </a>
              <a href="" onClick="addProductToCart()" class="btnYello">加入购物车</a>
@@ -109,7 +109,21 @@ $(function() {
 });
 
 function addProductToCart(){
-	//var productId = $.
+	var productId = $("#productId").val();
+	$.post(
+			"cart/toAddProductToCart",
+			{
+				"productId":productId
+			},
+			"json"
+		  );
+	addCartNum();
+}
+
+function addCartNum(){
+	var cartNum = $("#cartNum").html();
+	var num = cartNum + 1;
+	$("#cartNum").html(num);
 }
 </script>
 </html>
