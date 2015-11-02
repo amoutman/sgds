@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.creditease.sgds.product.dao.ReviewMapper" >
+  <resultMap id="ReviewMap" type="com.creditease.sgds.product.bean.ProductReview" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="product_id" property="productId" jdbcType="CHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="desc_info" property="descInfo" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="created_by_id" property="createdById" jdbcType="CHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, level, desc_info, created_date, created_by_id, created_by
+  </sql>
+  <select id="getProductReviewList" resultMap="ReviewMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_product_review
+    where product_id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_product_review
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insertReview" parameterType="com.creditease.sgds.product.bean.ProductReview" >
+    insert into tb_product_review (id, product_id, level, 
+      desc_info, created_date, created_by_id, 
+      created_by)
+    values (#{id,jdbcType=CHAR}, #{productId,jdbcType=CHAR}, #{level,jdbcType=INTEGER}, 
+      #{descInfo,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{createdById,jdbcType=CHAR}, 
+      #{createdBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.creditease.sgds.product.bean.ProductReview" >
+    insert into tb_product_review
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="descInfo != null" >
+        desc_info,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdById != null" >
+        created_by_id,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=CHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="descInfo != null" >
+        #{descInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdById != null" >
+        #{createdById,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.product.bean.ProductReview" >
+    update tb_product_review
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=CHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="descInfo != null" >
+        desc_info = #{descInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdById != null" >
+        created_by_id = #{createdById,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.product.bean.ProductReview" >
+    update tb_product_review
+    set product_id = #{productId,jdbcType=CHAR},
+      level = #{level,jdbcType=INTEGER},
+      desc_info = #{descInfo,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by_id = #{createdById,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

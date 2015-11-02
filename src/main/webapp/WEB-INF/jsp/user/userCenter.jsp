@@ -49,7 +49,7 @@ body{max-width: 640px;}
              </a>
            </li>
           <li class="dpj">
-             <a href="待评价.html">
+             <a href="${pageContext.request.contextPath}/product/toUnReview">
                <span class="navdemo">待评价</span>
                <span class="num">8</span>
              </a>

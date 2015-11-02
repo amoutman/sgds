@@ -49,7 +49,8 @@ public class CartController {
 		if(!user.equals(null)){
 			cart = cartService.getCartById(user.getId());
 			cart.setUpdatedDate(new Date());
-			//将购物车数据插入数据库
+			//查询默认收货地址
+			
 		}else{
 			cart = new Cart();
 		}

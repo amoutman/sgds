@@ -66,15 +66,15 @@ body{max-width: 640px;}
     
     <!--底部导航 start-->
     <nav class="app-nav">
-      <a href="购物车.html" class="app-link app-link1">
+      <a href="${pageContext.request.contextPath}/cart/toCart" class="app-link app-link1">
         <span class="app-icon"></span>
         <span class="nm">购物车</span>
       </a>
-      <a href="首页.html" class="app-link app-link2 curr">
+      <a href="javascript:void(0);" class="app-link app-link2 curr">
         <span class="app-icon"></span>
         <span class="nm">首页</span>
       </a>
-      <a href="个人中心.html" class="app-link app-link3">
+      <a href="${pageContext.request.contextPath}/userCenter/toUserCenter" class="app-link app-link3">
         <span class="app-icon"></span>
         <span class="nm">我的</span>
       </a>
