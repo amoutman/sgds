@@ -21,5 +21,5 @@ public Receiver getReceiverById(String id);
 	
 	public void deleteReceiver(String receiverId);
 	
-	public void updateDefault(String id);
+	public void updateDefault(String id,String userId);
 }

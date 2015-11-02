@@ -142,7 +142,7 @@
   <update id="updateDefault" parameterType="String">
   	update tb_receiver set master_or_not = 0 where id = #{id}
   </update>
-  <update id="updateUnDefault">
-  	update tb_receiver set master_or_not = 1 where master_or_not = 0
+  <update id="updateUnDefault" parameterType="String">
+  	update tb_receiver set master_or_not = 1 where master_or_not = 0 and user_id = #{userId}
   </update>
 </mapper>

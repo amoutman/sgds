@@ -23,6 +23,6 @@ public interface ReceiverMapper {
 	
 	public void updateDefault(String id);
 	
-	public void updateUnDefault();
+	public void updateUnDefault(String userId);
 
 }

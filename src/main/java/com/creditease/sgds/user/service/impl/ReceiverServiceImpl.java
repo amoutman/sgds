@@ -62,9 +62,9 @@ public class ReceiverServiceImpl implements ReceiverService {
 		receiverMapper.deleteReceiver(receiverId);
 	}
 	
-	public void updateDefault(String id){
+	public void updateDefault(String id,String userId){
 	
-		receiverMapper.updateUnDefault();
+		receiverMapper.updateUnDefault(userId);
 		receiverMapper.updateDefault(id);
 	}
 }

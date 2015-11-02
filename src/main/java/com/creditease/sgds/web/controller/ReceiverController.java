@@ -79,6 +79,7 @@ public class ReceiverController {
 	
 	@RequestMapping("/updateReceiverDefault")
 	public void updateReceiverDefault(HttpServletRequest request,@RequestParam("receiverId") String receiverId){
-		receiverService.updateDefault(receiverId);
+		User user = (User)request.getSession().getAttribute("user");
+		receiverService.updateDefault(receiverId,user.getId());
 	}
 }
