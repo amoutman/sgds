@@ -64,7 +64,7 @@
 	}
 	
 	function createAddress(productIds){
-		$.post("/createAddr", { "productIds" : productIds } );
+		//$.post("/toInsertReceiver", { "productIds" : productIds } );
 	}
 </script>
 </html>

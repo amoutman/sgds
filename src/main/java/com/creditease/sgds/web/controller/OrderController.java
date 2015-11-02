@@ -23,6 +23,7 @@ import com.creditease.sgds.product.service.ProductService;
 import com.creditease.sgds.user.model.Receiver;
 import com.creditease.sgds.user.model.User;
 import com.creditease.sgds.user.model.UserCoupon;
+import com.creditease.sgds.user.service.ReceiverService;
 import com.creditease.sgds.user.service.UserService;
 import com.creditease.sgds.util.BigDecimalUtils;
 import com.creditease.sgds.util.BusConstants;
@@ -44,6 +45,9 @@ public class OrderController extends BaseController{
 	
 	@Resource(name="orderService")
 	private OrderService orderService;
+	
+	@Resource(name="recevierService")
+	private ReceiverService receiverService;
 	
 	/**
 	 * 订单确认
@@ -118,13 +122,14 @@ public class OrderController extends BaseController{
 			ModelAndView view = new ModelAndView(viewName);
 			view.addObject("productIds", productIds);
 			if(!receiverId.equals(receiver.getId())){
-				//更新当前默认地址状态
-				receiver.setMasterOrNot(BusConstants.RECEIVER_ISNOT_DEFAULT_NO);
-				userService.updateReceiverById(receiver);
-				//获取并更新新的默认地址
-				receiver = userService.selectReceiverById(receiverId);
-				receiver.setMasterOrNot(BusConstants.RECEIVER_ISNOT_DEFAULT_YES);
-				userService.updateReceiverById(receiver);
+//				//更新当前默认地址状态
+//				receiver.setMasterOrNot(BusConstants.RECEIVER_ISNOT_DEFAULT_NO);
+//				userService.updateReceiverById(receiver);
+//				//获取并更新新的默认地址
+//				receiver = userService.selectReceiverById(receiverId);
+//				receiver.setMasterOrNot(BusConstants.RECEIVER_ISNOT_DEFAULT_YES);
+//				userService.updateReceiverById(receiver);
+				receiverService.updateDefault(receiverId, user.getId());
 			}
 
 			return view;
@@ -132,11 +137,6 @@ public class OrderController extends BaseController{
 			e.printStackTrace();
 			throw new RuntimeException("变更地址模块处理失败!");
 		}
-	}
-	
-	@RequestMapping(value = "/createAddr",  method = RequestMethod.POST)
-	public ModelAndView createAddress(String productIds){
-		return null;
 	}
 	
 	@RequestMapping(value = "/orderCommit",  method = RequestMethod.POST)
