@@ -1,7 +1,6 @@
 package com.creditease.sgds.user.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.creditease.sgds.user.model.Receiver;
 
@@ -20,5 +19,5 @@ public Receiver getReceiverById(String id);
 	
 	public void deleteReceiver(String receiverId);
 	
-	public void updateDefault(String id, String userId);
+	public void updateDefault(String id,String userId);
 }
