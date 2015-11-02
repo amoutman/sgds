@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.creditease.sgds.order.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.creditease.sgds.order.model.Order" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="receiver_id" property="receiverId" jdbcType="CHAR" />
+    <result column="distribution_mode" property="distributionMode" jdbcType="INTEGER" />
+    <result column="eta" property="eta" jdbcType="TIMESTAMP" />
+    <result column="pay_mode" property="payMode" jdbcType="INTEGER" />
+    <result column="coupon_id" property="couponId" jdbcType="CHAR" />
+    <result column="product_total_amount" property="productTotalAmount" jdbcType="DECIMAL" />
+    <result column="carriage" property="carriage" jdbcType="DECIMAL" />
+    <result column="coupon_amount" property="couponAmount" jdbcType="DECIMAL" />
+    <result column="practtical_coping" property="practticalCoping" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="created_by_id" property="createdById" jdbcType="CHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="received_date" property="receivedDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_no, receiver_id, distribution_mode, eta, pay_mode, coupon_id, product_total_amount, 
+    carriage, coupon_amount, practtical_coping, status, created_date, created_by_id, 
+    created_by, update_date, received_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.creditease.sgds.order.model.Order" >
+    insert into tb_order (id, order_no, receiver_id, 
+      distribution_mode, eta, pay_mode, 
+      coupon_id, product_total_amount, carriage, 
+      coupon_amount, practtical_coping, status, 
+      created_date, created_by_id, created_by, 
+      update_date, received_date)
+    values (#{id,jdbcType=CHAR}, #{orderNo,jdbcType=VARCHAR}, #{receiverId,jdbcType=CHAR}, 
+      #{distributionMode,jdbcType=INTEGER}, #{eta,jdbcType=TIMESTAMP}, #{payMode,jdbcType=INTEGER}, 
+      #{couponId,jdbcType=CHAR}, #{productTotalAmount,jdbcType=DECIMAL}, #{carriage,jdbcType=DECIMAL}, 
+      #{couponAmount,jdbcType=DECIMAL}, #{practticalCoping,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{createdById,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{receivedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.creditease.sgds.order.model.Order" >
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="receiverId != null" >
+        receiver_id,
+      </if>
+      <if test="distributionMode != null" >
+        distribution_mode,
+      </if>
+      <if test="eta != null" >
+        eta,
+      </if>
+      <if test="payMode != null" >
+        pay_mode,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="productTotalAmount != null" >
+        product_total_amount,
+      </if>
+      <if test="carriage != null" >
+        carriage,
+      </if>
+      <if test="couponAmount != null" >
+        coupon_amount,
+      </if>
+      <if test="practticalCoping != null" >
+        practtical_coping,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdById != null" >
+        created_by_id,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="receivedDate != null" >
+        received_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverId != null" >
+        #{receiverId,jdbcType=CHAR},
+      </if>
+      <if test="distributionMode != null" >
+        #{distributionMode,jdbcType=INTEGER},
+      </if>
+      <if test="eta != null" >
+        #{eta,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMode != null" >
+        #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=CHAR},
+      </if>
+      <if test="productTotalAmount != null" >
+        #{productTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="carriage != null" >
+        #{carriage,jdbcType=DECIMAL},
+      </if>
+      <if test="couponAmount != null" >
+        #{couponAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="practticalCoping != null" >
+        #{practticalCoping,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdById != null" >
+        #{createdById,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedDate != null" >
+        #{receivedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.order.model.Order" >
+    update tb_order
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverId != null" >
+        receiver_id = #{receiverId,jdbcType=CHAR},
+      </if>
+      <if test="distributionMode != null" >
+        distribution_mode = #{distributionMode,jdbcType=INTEGER},
+      </if>
+      <if test="eta != null" >
+        eta = #{eta,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMode != null" >
+        pay_mode = #{payMode,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=CHAR},
+      </if>
+      <if test="productTotalAmount != null" >
+        product_total_amount = #{productTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="carriage != null" >
+        carriage = #{carriage,jdbcType=DECIMAL},
+      </if>
+      <if test="couponAmount != null" >
+        coupon_amount = #{couponAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="practticalCoping != null" >
+        practtical_coping = #{practticalCoping,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdById != null" >
+        created_by_id = #{createdById,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedDate != null" >
+        received_date = #{receivedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.order.model.Order" >
+    update tb_order
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      receiver_id = #{receiverId,jdbcType=CHAR},
+      distribution_mode = #{distributionMode,jdbcType=INTEGER},
+      eta = #{eta,jdbcType=TIMESTAMP},
+      pay_mode = #{payMode,jdbcType=INTEGER},
+      coupon_id = #{couponId,jdbcType=CHAR},
+      product_total_amount = #{productTotalAmount,jdbcType=DECIMAL},
+      carriage = #{carriage,jdbcType=DECIMAL},
+      coupon_amount = #{couponAmount,jdbcType=DECIMAL},
+      practtical_coping = #{practticalCoping,jdbcType=DECIMAL},
+      status = #{status,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by_id = #{createdById,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      received_date = #{receivedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

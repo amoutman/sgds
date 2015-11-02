@@ -21,7 +21,8 @@ import com.creditease.sgds.cart.service.CartService;
 @RequestMapping("/cart")
 @Controller
 public class CartController {
-	@Resource
+	
+	@Resource(name="cartService")
 	private CartService cartService;
 	
 	@RequestMapping("/toCart")

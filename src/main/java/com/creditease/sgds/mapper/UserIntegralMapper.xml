@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.creditease.sgds.user.dao.UserIntegralMapper" >
+  <resultMap id="BaseResultMap" type="com.creditease.sgds.user.model.UserIntegral" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="integral" property="integral" jdbcType="DECIMAL" />
+    <result column="direction" property="direction" jdbcType="INTEGER" />
+    <result column="desc_info" property="descInfo" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, integral, direction, desc_info, created_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_integral
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_user_integral
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.creditease.sgds.user.model.UserIntegral" >
+    insert into tb_user_integral (id, user_id, integral, 
+      direction, desc_info, created_date
+      )
+    values (#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{integral,jdbcType=DECIMAL}, 
+      #{direction,jdbcType=INTEGER}, #{descInfo,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.creditease.sgds.user.model.UserIntegral" >
+    insert into tb_user_integral
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="integral != null" >
+        integral,
+      </if>
+      <if test="direction != null" >
+        direction,
+      </if>
+      <if test="descInfo != null" >
+        desc_info,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="integral != null" >
+        #{integral,jdbcType=DECIMAL},
+      </if>
+      <if test="direction != null" >
+        #{direction,jdbcType=INTEGER},
+      </if>
+      <if test="descInfo != null" >
+        #{descInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.user.model.UserIntegral" >
+    update tb_user_integral
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="integral != null" >
+        integral = #{integral,jdbcType=DECIMAL},
+      </if>
+      <if test="direction != null" >
+        direction = #{direction,jdbcType=INTEGER},
+      </if>
+      <if test="descInfo != null" >
+        desc_info = #{descInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.user.model.UserIntegral" >
+    update tb_user_integral
+    set user_id = #{userId,jdbcType=CHAR},
+      integral = #{integral,jdbcType=DECIMAL},
+      direction = #{direction,jdbcType=INTEGER},
+      desc_info = #{descInfo,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

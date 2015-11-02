@@ -19,5 +19,7 @@ public interface CartService {
 	public void insertCartDetails(CartDetails cd);
 	
 	public void deleteCartDetails(String id);
+	
+	public List<CartDetails> getCartDetailsListByProdcutIds(String cartId, List<String> productIds);
 
 }

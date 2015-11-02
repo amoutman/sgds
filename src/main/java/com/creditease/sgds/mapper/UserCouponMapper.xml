@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.creditease.sgds.user.dao.UserCouponMapper" >
+  <resultMap id="BaseResultMap" type="com.creditease.sgds.user.model.UserCoupon" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="coupon_no" property="couponNo" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="exp_date" property="expDate" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="desc_for_get" property="descForGet" jdbcType="VARCHAR" />
+    <result column="desc_for_used" property="descForUsed" jdbcType="VARCHAR" />
+    <result column="get_datetime" property="getDatetime" jdbcType="TIMESTAMP" />
+    <result column="used_datetime" property="usedDatetime" jdbcType="TIMESTAMP" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, coupon_no, amount, exp_date, status, desc_for_get, desc_for_used, get_datetime, 
+    used_datetime, pic_path
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_coupon
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <select id="selectCouponsByUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_coupon
+    where user_id = #{userId,jdbcType=CHAR} and status = #{status,jdbcType=INTEGER} and  <![CDATA[exp_date > date_format(NOW(),'%Y-%m-%d')]]> and <![CDATA[amount < #{orderAmount}]]>
+    order by amount 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_user_coupon
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.creditease.sgds.user.model.UserCoupon" >
+    insert into tb_user_coupon (id, user_id, coupon_no, 
+      amount, exp_date, status, 
+      desc_for_get, desc_for_used, get_datetime, 
+      used_datetime, pic_path)
+    values (#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{couponNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=INTEGER}, #{expDate,jdbcType=DATE}, #{status,jdbcType=INTEGER}, 
+      #{descForGet,jdbcType=VARCHAR}, #{descForUsed,jdbcType=VARCHAR}, #{getDatetime,jdbcType=TIMESTAMP}, 
+      #{usedDatetime,jdbcType=TIMESTAMP}, #{picPath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.creditease.sgds.user.model.UserCoupon" >
+    insert into tb_user_coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="couponNo != null" >
+        coupon_no,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="expDate != null" >
+        exp_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="descForGet != null" >
+        desc_for_get,
+      </if>
+      <if test="descForUsed != null" >
+        desc_for_used,
+      </if>
+      <if test="getDatetime != null" >
+        get_datetime,
+      </if>
+      <if test="usedDatetime != null" >
+        used_datetime,
+      </if>
+      <if test="picPath != null" >
+        pic_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="couponNo != null" >
+        #{couponNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="expDate != null" >
+        #{expDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="descForGet != null" >
+        #{descForGet,jdbcType=VARCHAR},
+      </if>
+      <if test="descForUsed != null" >
+        #{descForUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="getDatetime != null" >
+        #{getDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="usedDatetime != null" >
+        #{usedDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.user.model.UserCoupon" >
+    update tb_user_coupon
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="couponNo != null" >
+        coupon_no = #{couponNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="expDate != null" >
+        exp_date = #{expDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="descForGet != null" >
+        desc_for_get = #{descForGet,jdbcType=VARCHAR},
+      </if>
+      <if test="descForUsed != null" >
+        desc_for_used = #{descForUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="getDatetime != null" >
+        get_datetime = #{getDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="usedDatetime != null" >
+        used_datetime = #{usedDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picPath != null" >
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.user.model.UserCoupon" >
+    update tb_user_coupon
+    set user_id = #{userId,jdbcType=CHAR},
+      coupon_no = #{couponNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      exp_date = #{expDate,jdbcType=DATE},
+      status = #{status,jdbcType=INTEGER},
+      desc_for_get = #{descForGet,jdbcType=VARCHAR},
+      desc_for_used = #{descForUsed,jdbcType=VARCHAR},
+      get_datetime = #{getDatetime,jdbcType=TIMESTAMP},
+      used_datetime = #{usedDatetime,jdbcType=TIMESTAMP},
+      pic_path = #{picPath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>
