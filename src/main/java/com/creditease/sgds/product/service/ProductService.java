@@ -15,6 +15,8 @@ public interface ProductService {
 	
 	public List<Product> getProductDetailsByIds(List<String> productIds);
 	
+	public Integer getProductCountByIds(List<String> productIds);
+	
 	public List<ProductDetailPic> getProductDetPicList(String id);
 	
 	public List<ProductReview> getProductReviewList(String id);

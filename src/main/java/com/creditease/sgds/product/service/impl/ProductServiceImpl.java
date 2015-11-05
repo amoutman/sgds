@@ -36,6 +36,10 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getProductDetailsByIds(productIds);
 	}
 	
+	public Integer getProductCountByIds(List<String> productIds){
+		return productMapper.getProductCountByIds(productIds);
+	}
+	
 	public List<ProductDetailPic> getProductDetPicList(String id){
 		return productMapper.getProductDetPicList(id);
 	}

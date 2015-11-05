@@ -1,5 +1,8 @@
 package com.creditease.sgds.order.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,4 +57,40 @@ public class OrderServiceImpl implements OrderService {
 		orderMapper.updateByPrimaryKeySelective(order);
 	}
 
+	public Order selectByPrimaryKey(String id){
+		return orderMapper.selectByPrimaryKey(id);
+	}
+	
+	public List<Order> getOrderListByParams(Map<String,Object> paramMap){
+		return orderMapper.getOrderListByParams(paramMap);
+	}
+	    
+	public int getOrderCountByParams(Map<String,Object> paramMap){
+		return orderMapper.getOrderCountByParams(paramMap);
+	}
+	
+	public List<OrderDetails> getOrderDetailsListByOrderId(String orderId){
+		return orderDetailsMapper.getOrderDetailsListByOrderId(orderId);
+	}
+	
+    public int getUnEvaluatedCount(Map<String,Object> uMap)
+    {
+    	return orderDetailsMapper.getUnEvaluatedCount(uMap);
+    }
+    
+    public List<OrderDetails> getUnEvaluatedList(Map<String,Object> uMap){
+    	return orderDetailsMapper.getUnEvaluatedList(uMap);
+    }
+    
+    public OrderDetails getOrderDetailsById(String id){
+    	return orderDetailsMapper.getOrderDetailsById(id);
+    }
+    
+    public void updateOrderReviewStatus(OrderDetails orderDetails){
+    	orderDetailsMapper.updateByPrimaryKeySelective(orderDetails);
+    }
+    
+    public void updateByPrimaryKeySelective(Order record){
+    	orderMapper.updateByPrimaryKeySelective(record);
+    }
 }

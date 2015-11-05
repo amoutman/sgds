@@ -9,7 +9,7 @@
 			   a.product_id productId,
 			   a.count count,
 			   b.product_name productName,
-			   b.product_master_pic productMasterPic,
+			   b.product_master_pic_path productMasterPic,
 			   c.unit unit,
 			   c.price price	
 		  from tb_shopping_cart_details a,
@@ -32,7 +32,7 @@
 			   a.product_id productId,
 			   a.count count,
 			   b.product_name productName,
-			   b.product_master_pic productMasterPic,
+			   b.product_master_pic_path productMasterPic,
 			   c.unit unit,
 			   c.price price	
 		  from tb_shopping_cart_details a,

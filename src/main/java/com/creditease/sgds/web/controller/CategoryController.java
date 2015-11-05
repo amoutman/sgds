@@ -35,7 +35,7 @@ public class CategoryController {
 		cMap.put("status", 0);	
 		List<Category> cList = categoryService.getCategoryList(cMap);
 		mv.addObject("cList", cList);
-		mv.setViewName("product/category.jsp");
+		mv.setViewName("product/category");
 		return mv;
 	}
 }

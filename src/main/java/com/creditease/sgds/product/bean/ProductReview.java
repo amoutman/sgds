@@ -27,11 +27,11 @@ public class ProductReview {
 	public void setDescInfo(String descInfo) {
 		this.descInfo = descInfo;
 	}
-	public Date getCreatedByDate() {
-		return createdByDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-	public void setCreatedByDate(Date createdByDate) {
-		this.createdByDate = createdByDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 	public String getCreatedById() {
 		return createdById;
@@ -49,7 +49,7 @@ public class ProductReview {
 	private String productId;
 	private int level;
 	private String descInfo;
-	private Date createdByDate;
+	private Date createdDate;
 	private String createdById;
 	private String createdBy;
 }

@@ -40,7 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <ul class="product-list clearfix">
           <c:forEach var="product" items="${pList}">
               <li>
-                <a href="详情.html" class="app-link clearfix"><img src="${pageContext.request.contextPath}/resource/${product.productMasterPicPath}" alt="水果" /></a>
+                <a href="${pageContext.request.contextPath}/product/toProductDetails?productId=${product.id}" class="app-link clearfix"><img src="${pageContext.request.contextPath}/resource/${product.productMasterPicPath}" alt="水果" /></a>
                 <div class="pro-info clearfix">
                   <div class="pro-left">
                       <span class="h2">${product.productName}</span>

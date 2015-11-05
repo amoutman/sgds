@@ -34,7 +34,7 @@ body{max-width: 640px;}
            <ul class="style-list clearfix">
            	<c:forEach var="category" items="${cList}">
               <li>
-                <a href="分类列表.html" class="app-link">
+                <a href="${pageContext.request.contextPath}/category/toProductCategory?categoryId=${category.id}" class="app-link">
                  <span class="app-icon"><img src="${pageContext.request.contextPath}/resource/${category.categoryPicPath}" alt="图标" /></span>
                  <span class="tit">${category.categoryName }</span>
                  </a>
@@ -47,7 +47,7 @@ body{max-width: 640px;}
     <!--热门水果 start-->
     <div class="app-tit clearfix">
         <span class="xline"></span>
-        <a href="" class="app-link"><img src="${pageContext.request.contextPath}/resource/images/app-tit.png" alt="标题" /></a>
+        <a href="javascript:void(0);" class="app-link"><img src="${pageContext.request.contextPath}/resource/images/app-tit.png" alt="标题" /></a>
     </div>
     
 
@@ -55,7 +55,7 @@ body{max-width: 640px;}
           <c:forEach var="hp" items="${hList}">
           
               <li>
-                <a href="详情.html" class="app-link">
+                <a href="${pageContext.request.contextPath}/product/toProductDetails?productId=${hp.id}" class="app-link">
                  <img src="${pageContext.request.contextPath}/resource/${hp.productPicPath}" alt="水果" />
                  </a>
               </li>
@@ -66,15 +66,15 @@ body{max-width: 640px;}
     
     <!--底部导航 start-->
     <nav class="app-nav">
-      <a href="购物车.html" class="app-link app-link1">
+      <a href="${pageContext.request.contextPath}/cart/toCart" class="app-link app-link1">
         <span class="app-icon"></span>
         <span class="nm">购物车</span>
       </a>
-      <a href="首页.html" class="app-link app-link2 curr">
+      <a href="javascript:void(0);" class="app-link app-link2 curr">
         <span class="app-icon"></span>
         <span class="nm">首页</span>
       </a>
-      <a href="个人中心.html" class="app-link app-link3">
+      <a href="${pageContext.request.contextPath}/userCenter/toUserCenter" class="app-link app-link3">
         <span class="app-icon"></span>
         <span class="nm">我的</span>
       </a>

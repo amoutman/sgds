@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <!--产品展示图 start-->
      <div id="slides">
      <c:forEach var="pdp" items="${pdpList}">
-     	<a href="" class="app-link"><img src="${pageContext.request.contextPath}/resource/${pdp.picPath}" alt="" /></a>
+     	<a href="javascript:void(0);" class="app-link"><img src="${pageContext.request.contextPath}/resource/${pdp.picPath}" alt="" /></a>
      </c:forEach>
      </div>
     <!--产品展示图 end-->
@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               
               <!--评论 start-->
               <div class="pro-com">
-              <c:forEach var="pr" items="prList">
+              <c:forEach var="pr" items="${prList }">
                 <div class="comment">
                  <div class="comment-t">
                    <span class="star clearfix">
@@ -83,11 +83,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <!-- 按钮 start -->
     <div class="productBtn">
-             <a href=""><span class="cartIcon" id="end">
-               <span class="cartNum" id="cartNum" style="display:none">10</span>
+             <a href="${pageContext.request.contextPath}/cart/toCart"><span class="cartIcon" id="end">
+               <span class="cartNum" id="cartNum"></span>
              </span>
              </a>
-             <a href="" onClick="addProductToCart()" class="btnYello">加入购物车</a>
+             <a href="javascript:void(0);" onClick="addProductToCart()" class="btnYello">加入购物车</a>
              <a href="" class="btnPink">立即购买</a>
           </div>
     <!-- 按钮 end -->
@@ -111,19 +111,24 @@ $(function() {
 function addProductToCart(){
 	var productId = $("#productId").val();
 	$.post(
-			"cart/toAddProductToCart",
+			"${pageContext.request.contextPath}/cart/toAddProductToCart",
 			{
 				"productId":productId
 			},
 			"json"
-		  );
+	);
 	addCartNum();
 }
 
 function addCartNum(){
 	var cartNum = $("#cartNum").html();
-	var num = cartNum + 1;
-	$("#cartNum").html(num);
+	var num = 0;
+	if(cartNum==""){
+		num = 1;
+	}else{
+		num = Number(cartNum) + 1;
+	}
+	$("#cartNum").html(""+num);
 }
 </script>
 </html>

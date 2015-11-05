@@ -90,4 +90,66 @@
       evaluate_or_not = #{evaluateOrNot,jdbcType=INTEGER}
     where id = #{id,jdbcType=CHAR}
   </update>
+  <select id="getOrderDetailsListByOrderId" resultType="com.creditease.sgds.order.model.OrderDetails" parameterType="java.lang.String">
+  	select a.id id,
+  		   a.order_id orderId,
+  		   a.product_id productId,
+  		   a.count count,
+  		   a.evaluate_or_not evaluateOrNot,
+  		   b.prodcut_name productName,
+  		   b.product_master_pic_path productMasterPicPath,
+  		   c.price price,
+    	   c.unit unit,
+    	   (a.count * c.price) productAmount 
+    from tb_order_details a,
+    	 tb_product b,
+    	 tb_product_buy_ways c
+    where a.product_id = b.id
+      and a.product_id = b.product_id
+      and a.order_id = #{orderId,jdbcType=CHAR}
+  </select>
+  <select id="getUnEvaluatedCount" resultType="Integer" parameterType="Map">
+  	select count(a.id)
+    from tb_order_details a,
+    	 tb_order b
+    where a.order_id = b.id
+      and b.created_by_id = #{userId,jdbcType=CHAR}
+      and b.status = #{status,jdbcType=INTEGER}
+      and a.evaluate_or_not = #{evaluateOrNot,jdbcType=INTEGER}
+  </select>
+  <select id="getUnEvaluatedList" resultType="com.creditease.sgds.order.model.OrderDetails" parameterType="Map">
+  	select a.id id,
+  		   a.order_id orderId,
+  		   a.product_id productId,
+  		   a.count count,
+  		   a.evaluate_or_not evaluateOrNot,
+  		   c.prodcut_name productName,
+  		   c.product_master_pic_path productMasterPicPath,
+  		   c.product_desc productDesc
+    from tb_order_details a,
+    	 tb_order b,
+    	 tb_product c
+    where a.order_id = b.id
+      and a.product_id = c.id
+      and b.created_by_id = #{userId,jdbcType=CHAR}
+      and b.status = #{status,jdbcType=INTEGER}
+      and a.evaluate_or_not = #{evaluateOrNot,jdbcType=INTEGER}
+  </select>
+  <select id="getOrderDetailsById" resultType="com.creditease.sgds.order.model.OrderDetails" parameterType="java.lang.String">
+  	select a.id id,
+  		   a.order_id orderId,
+  		   a.product_id productId,
+  		   a.count count,
+  		   a.evaluate_or_not evaluateOrNot,
+  		   b.prodcut_name productName,
+  		   b.product_master_pic_path productMasterPicPath,
+  		   c.price price,
+    	   c.unit unit
+    from tb_order_details a,
+    	 tb_product b,
+    	 tb_product_buy_ways c
+    where a.product_id = b.id
+      and a.product_id = b.product_id
+      and a.id = #{id,jdbcType=CHAR}
+  </select>
 </mapper>

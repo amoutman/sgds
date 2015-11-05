@@ -26,13 +26,10 @@
     		   a.product_master_pic_path productMasterPicPath,
     		   b.price price,
     		   b.unit unit,
-    		   a.product_desc productDesc,
-    		   c.product_detail_master_pic_path productDetailsMasterPicPath
+    		   a.product_desc productDesc
     	from tb_product a,
-    		 tb_product_buy_ways b,
-    		 tb_product_details c
+    		 tb_product_buy_ways b
     	where a.id = b.product_id  
-    	      and a.id = c.product_id
     	      and a.id = #{id}
     </select>
     
@@ -51,19 +48,27 @@
     	  </foreach>
     </select>
     
+    <select id="getProductCountByIds" parameterType="List" resultType="Integer">
+    	select count(a.id)
+    	from tb_product a,
+    		 tb_product_buy_ways b
+    	where a.id = b.product_id
+    	  and a.id in 
+    	  <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+    	  #{id}
+    	  </foreach>
+    </select>
+    
     <select id="getProductByCategoryId" parameterType="String" resultType="com.creditease.sgds.product.bean.Product">
     	select a.id id,
     		   a.product_name productName,
     		   a.product_master_pic_path productMasterPicPath,
     		   b.price price,
     		   b.unit unit,
-    		   a.product_desc productDesc,
-    		   c.product_detail_master_pic_path productDetailsMasterPicPath
+    		   a.product_desc productDesc
     	from tb_product a,
-    		 tb_product_buy_ways b,
-    		 tb_product_details c
+    		 tb_product_buy_ways b
     	where a.id = b.product_id  
-    	      and a.id = c.product_id
     	      and a.category_id = #{categoryId}
     	      and a.status = 0
     </select>
@@ -79,9 +84,9 @@
     		   product_id productId,
     		   level level,
     		   desc_info descInfo,
-    		   created_by_date createdByDate,
+    		   created_date createdDate,
     		   created_by createdBy
     	from tb_product_review
-    	where productId = #{productId}
+    	where product_id = #{productId}
     </select>
 </mapper>

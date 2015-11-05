@@ -232,4 +232,30 @@
       received_date = #{receivedDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=CHAR}
   </update>
+  <select id="getOrderListByParams" parameterType="Map" resultType="com.creditease.sgds.order.model.Order">
+  	select a.id id,
+    	   a.order_no orderNo,
+    	   a.receiver_id receiverId,
+    	   a.practtical_coping practticalCoping,
+    	   (select sum(count) from tb_order_details b where b.order_id = a.id) productCount
+    from tb_order a
+    where a.created_by_id = #{userId,jdbcType=CHAR}
+         <if test="status == 1">
+      		and (a.status == 1 or a.status == 2)
+      	 </if>
+      	 <if test="status != 1">
+      		and a.status = #{status,jdbcType=INTEGER}
+      	 </if>
+  </select>
+  <select id="getOrderCountByParams" parameterType="Map" resultType="Integer">
+  	select count(id)
+    from tb_order
+    where created_by_id = #{userId,jdbcType=CHAR}
+      <if test="status == 1">
+      		and (a.status == 1 or a.status == 2)
+      	 </if>
+      	 <if test="status != 1">
+      		and a.status = #{status,jdbcType=INTEGER}
+      	 </if>
+  </select>
 </mapper>

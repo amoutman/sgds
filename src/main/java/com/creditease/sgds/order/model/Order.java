@@ -2,6 +2,9 @@ package com.creditease.sgds.order.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import com.creditease.sgds.user.model.Receiver;
 
 public class Order {
     private String id;
@@ -39,8 +42,38 @@ public class Order {
     private Date receivedDate;
     
     private String productIds;
+    
+    private Receiver receiver;
+    
+    private Integer productCount;
+    
+    private List<OrderDetails> odList;
+    
+    public List<OrderDetails> getOdList() {
+		return odList;
+	}
 
-    public String getProductIds() {
+	public void setOdList(List<OrderDetails> odList) {
+		this.odList = odList;
+	}
+
+	public Integer getProductCount() {
+		return productCount;
+	}
+
+	public void setProductCount(Integer productCount) {
+		this.productCount = productCount;
+	}
+
+    public Receiver getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(Receiver receiver) {
+		this.receiver = receiver;
+	}
+
+	public String getProductIds() {
 		return productIds;
 	}
 
