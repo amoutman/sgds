@@ -27,7 +27,9 @@ import com.creditease.sgds.product.service.ProductService;
 import com.creditease.sgds.user.model.Receiver;
 import com.creditease.sgds.user.model.User;
 import com.creditease.sgds.user.service.ReceiverService;
+import com.creditease.sgds.user.service.UserService;
 import com.creditease.sgds.util.GlobalPara;
+import com.creditease.sgds.util.MD5;
 import com.creditease.sgds.util.PKIDUtils;
 
 @RequestMapping("/cart")
@@ -40,6 +42,8 @@ public class CartController {
 	private ProductService productService;
 	@Resource
 	private ReceiverService receiverService;
+	@Resource(name="userService")
+	private UserService userService;
 	
 	@RequestMapping("/toCart")
 	public ModelAndView toCart(HttpServletRequest request){
@@ -54,17 +58,17 @@ public class CartController {
 		}*/
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		Cart cart = null;
-		Receiver receiver = null;
+		//Receiver receiver = null;
 		if(user != null){
 			cart = cartService.getCartById(user.getId());
 			cart.setUpdatedDate(new Date());
 			//查询默认收货地址
-			receiver = receiverService.getReceiverByUserId(user.getId());
+			//receiver = receiverService.getReceiverByUserId(user.getId());
 		}else{
 			cart = new Cart();
-			receiver = new Receiver();
+			//receiver = new Receiver();
 		}
-		mv.addObject("receiver", receiver);
+		//mv.addObject("receiver", receiver);
 		Cookie cookie = getCookieByName(request,"productId");
 		//Cookie numCookie = getCookieByName(request,productId);
 		if(cookie == null){
@@ -252,60 +256,69 @@ public class CartController {
 	@ResponseBody
 	public Map<String,Object> toLogin(HttpServletRequest request,@RequestParam("userName") String userName,@RequestParam("password") String password){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
-		User user = new User();
+		try {
+			User user = userService.checkUser(userName.trim(), MD5.md5(password.trim()));
+			if(user == null){
+				resultMap.put("success", false); 
+			}else{
+				request.getSession().setAttribute(GlobalPara.USER_SESSION_TOKEN, user);
+				resultMap.put("success", true);
+				Cart cart = cartService.getCartById(user.getId());
+				cart.setUpdatedDate(new Date());
+				Cookie cookie = getCookieByName(request,"productId");
+				//根据Cookie中的productId查询出商品详细列表
+				String productIds = cookie.getValue();
+				//String[] pdStr = productIds.split(",");
+				List<String> pdList = strArrayToList(productIds);
+				//for(int i=0;i<productIds.length();i++){
+					//pdList.add(pdStr[i]);
+				//}
+				
+				List<Product> productList = productService.getProductDetailsByIds(pdList);
+				
+				BigDecimal settleAmount = new BigDecimal(0);
+				CartDetails cd = null;
+				List<CartDetails> cdList = new ArrayList<CartDetails>();
+				if(cart.getCdList().size()>0){
+					cdList.addAll(cart.getCdList());
+				}
+				
+				if(productList.size()>0){
+					for(Product p:productList){
+						cd = new CartDetails();
+						//获取cookie中每个商品的数量
+						Cookie numCookie = getCookieByName(request,p.getId());
+						int count = Integer.parseInt(numCookie.getValue());
+						
+						cd.setId(PKIDUtils.getUuid());
+						cd.setShoppingCartId(cart.getId());
+						cd.setProductId(p.getId());
+						cd.setProductName(p.getProductName());
+						cd.setProductMasterPic(p.getProductDetailsMasterPicPath());
+						cd.setUnit(p.getUnit());
+						cd.setPrice(p.getPrice());
+						cd.setCount(count);
+						BigDecimal pAmount = new BigDecimal(0);
+						pAmount = p.getPrice().multiply(new BigDecimal(count)); 
+						settleAmount = settleAmount.add(pAmount);
+						cdList.add(cd);
+					}
+					cart.setSettleAmount(settleAmount);
+					cart.setCdList(cdList);
+					cartService.updateCart(cart);
+					cartService.insertCartDetailsList(cdList);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Map<String,String> map = new HashMap<String,String>();
+			resultMap.put("success",GlobalPara.AJAX_FALSE);
+			resultMap.put("result", "系统登录出错，请重试！");
+		}
 		//调用登录方法
 		//代码空缺
 		
-		if(user == null){
-			resultMap.put("success", false); 
-		}else{
-			resultMap.put("success", true);
-			Cart cart = cartService.getCartById(user.getId());
-			cart.setUpdatedDate(new Date());
-			Cookie cookie = getCookieByName(request,"productId");
-			//根据Cookie中的productId查询出商品详细列表
-			String productIds = cookie.getValue();
-			//String[] pdStr = productIds.split(",");
-			List<String> pdList = strArrayToList(productIds);
-			//for(int i=0;i<productIds.length();i++){
-				//pdList.add(pdStr[i]);
-			//}
-			
-			List<Product> productList = productService.getProductDetailsByIds(pdList);
-			
-			BigDecimal settleAmount = new BigDecimal(0);
-			CartDetails cd = null;
-			List<CartDetails> cdList = new ArrayList<CartDetails>();
-			if(cart.getCdList().size()>0){
-				cdList.addAll(cart.getCdList());
-			}
-			
-			if(productList.size()>0){
-				for(Product p:productList){
-					cd = new CartDetails();
-					//获取cookie中每个商品的数量
-					Cookie numCookie = getCookieByName(request,p.getId());
-					int count = Integer.parseInt(numCookie.getValue());
-					
-					cd.setId(PKIDUtils.getUuid());
-					cd.setShoppingCartId(cart.getId());
-					cd.setProductId(p.getId());
-					cd.setProductName(p.getProductName());
-					cd.setProductMasterPic(p.getProductDetailsMasterPicPath());
-					cd.setUnit(p.getUnit());
-					cd.setPrice(p.getPrice());
-					cd.setCount(count);
-					BigDecimal pAmount = new BigDecimal(0);
-					pAmount = p.getPrice().multiply(new BigDecimal(count)); 
-					settleAmount = settleAmount.add(pAmount);
-					cdList.add(cd);
-				}
-				cart.setSettleAmount(settleAmount);
-				cart.setCdList(cdList);
-				cartService.updateCart(cart);
-				cartService.insertCartDetailsList(cdList);
-			}
-		}
+		
 		return resultMap;
 	}
 	

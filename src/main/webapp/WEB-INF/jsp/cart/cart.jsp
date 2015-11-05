@@ -73,20 +73,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          </c:forEach>     
            </ul>
            <!--产品列表 end-->
-
-    
-    <!-- 收货地址 end -->
-
-      <div class="deliver-address clearfix">
-         <div class="address-left">
-             <div class="address-info">${receiver.receiverName }  ${receiver.receiverMobile }</div>
-             <div class="address-info">${receiver.receiverProvince }${receiver.receiverRegion }${receiver.receiverAddress }</div>
-         </div>
-         <div class="address-edit">
-           <a href="" class="btnEdit"></a>
-         </div>
-      </div>
-     <!-- 收货地址 end -->
      
     </section>
     
