@@ -1,6 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/login/login.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/login/regist.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/order/changeAddrs.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/order/orderConfirm.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/order/orderPay.jsp=UTF-8
 encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8

@@ -24,4 +24,6 @@ public interface UserService {
 	List<Receiver> selectReceiversByUserId(String userId)throws Exception;
 	
 	void updateReceiverById(Receiver receiver)throws Exception;
+	
+	void saveUser(User user)throws Exception;
 }

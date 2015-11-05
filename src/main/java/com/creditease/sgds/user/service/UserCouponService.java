@@ -11,4 +11,6 @@ public interface UserCouponService {
 	public List<UserCoupon> getUserCouponList(Map<String,Object> ucMap);
 	
 	public Integer getUserCouponCount(Map<String,Object> ucMap);
+	
+	public void updateUserCouponById(UserCoupon coupon);
 }

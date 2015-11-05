@@ -17,6 +17,11 @@ public class BusConstants {
 	public static final Integer ORDER_PAY_STATUS_COMPLETED = 3;
 	public static final Integer ORDER_PAY_STATUS_CANCELLED = 4;
 	
+	/**支付方式  0：微信    1：支付宝  2: 货到付款  （默认微信）*/
+	public static final Integer ORDER_PAY_MODE_WECHAT = 0;
+	public static final Integer ORDER_PAY_MODE_ALIPAY = 1;
+	public static final Integer ORDER_PAY_MODE_CASHONDELIVERY = 2;
+	
 	/**评价状态 0：未评价   1：已评价*/
 	public static final Integer ORDER_EVALUATION_STATUS_NO = 0;
 	public static final Integer ORDER_EVALUATION_STATUS_YES = 1;
@@ -24,5 +29,18 @@ public class BusConstants {
 	/**是否为默认收货人 0:默认*/
 	public static final Integer RECEIVER_ISNOT_DEFAULT_YES = 0;
 	public static final Integer RECEIVER_ISNOT_DEFAULT_NO = 1;
+	
+	/**订单配送方式  0：送货上门  1：自取*/
+	public static final Integer ORDER_DISTRIBUTION_MODE_DELIVERY = 0;
+	public static final Integer ORDER_DISTRIBUTION_MODE_PICKUP = 1;
+	
+	/**用户状态 0：启用   1：停用*/
+	public static final Integer USER_STATUS_YES = 0;
+	public static final Integer USER_STATUS_NO = 1;
+	
+	/**用户类型 0：普通用户 1：会员 2：VIP会员*/
+	public static final Integer USER_TYPE_ORDINARY = 0;
+	public static final Integer USER_TYPE_MEMBER  = 1;
+	public static final Integer USER_TYPE_VIPMEMBER  = 2;
 
 }

@@ -168,7 +168,7 @@
       pic_path = #{picPath,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
-  <select id="getUserCouponList" parameterType="Map" resultMap="UserCouponMap">
+  <select id="getUserCouponList" parameterType="Map" resultMap="BaseResultMap">
   		select *
   		  from tb_user_coupon
   		 where user_id = #{userId}

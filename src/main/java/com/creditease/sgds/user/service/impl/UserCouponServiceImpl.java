@@ -32,4 +32,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 		return userCouponMapper.getUserCouponCount(ucMap);
 	}
 
+	@Override
+	public void updateUserCouponById(UserCoupon coupon) {
+		userCouponMapper.updateByPrimaryKeySelective(coupon);
+	}
+
 }

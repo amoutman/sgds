@@ -41,12 +41,59 @@ $(function () {
 			$(".orderbar .checkbox .ico-checkbox").removeClass("checked");
 	});
 	
-	
-	
-	//优惠券选择
-	 $(".voucher .checkbox").click(function () {
-        $(this).children(".ico-checkbox").toggleClass("checked");
-		 $(this).children("label").toggleClass("colorPink");
+	//付款方式选择
+	$(".paybox .checkbox").click(function (){
+         $(this).children(".ico-checkbox").addClass("checked");
+		 $(this).parent(".paybox").siblings().children(".checkbox").children(".ico-checkbox").removeClass("checked");
     })
+   $("#hdpay .checkbox").click(function (){
+	    $(this).parent("#hdpay").addClass("hdpay");
+	   })
+	
+//	//优惠券选择
+//	 $(".voucher .checkbox").click(function () {
+//        $(this).children(".ico-checkbox").addClass("checked");
+//		$(this).parent(".voucher").siblings().children(".checkbox").children(".ico-checkbox").removeClass("checked");
+//		$(this).children("label").addClass("colorPink");
+//		$(this).parent(".voucher").siblings().children(".checkbox").children("label").removeClass("colorPink");
+//		$("#couponId").val($(this).id);
+//		$.post(
+//				"${pageContext.request.contextPath}/order/checkCoupon",
+//				{
+//					"couponId":$(this).id,
+//					"productIds":$("#productIds").val()
+//				},
+//				function(data){
+//					if (data.msg == "1") {
+//						$("#totalAmount").val(data.actualAmountPay);
+//					} else {
+//						// 失败了
+//					}
+//				},
+//				"json"	
+//		);
+//    })
+	
+	//付款方式关闭		
+	$(".mbox .btnDelete").click(function(){
+		$(".mbox").fadeOut(300);
+		$(".tcbg").fadeOut(300);
+	})	
 		
 })
+
+
+// 弹窗
+function tickbox(closeID,boxID,typeID){
+		$('#'+closeID+'').click(function(){
+			$('#'+boxID+'').fadeOut();
+			return false;
+		});
+		$('#'+typeID+'').click(function(){
+			var h = $(document).height();
+			$('#'+boxID+'').css({ 'min-height': h });	
+			$('#'+boxID+'').center();
+			$('#'+boxID+'').fadeIn();
+			return false;
+		});
+}

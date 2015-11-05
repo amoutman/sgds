@@ -94,4 +94,9 @@ public class UserServiceImpl implements UserService {
 		receiverMapper.updateReceiver(receiver);
 	}
 
+	@Override
+	public void saveUser(User user) throws Exception {
+		userMapper.insertSelective(user);
+	}
+
 }

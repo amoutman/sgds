@@ -148,11 +148,12 @@ section .box-left label{ margin-left:1em;}
 section .box-right{width:60%;float: left; }
 section .box-right p{font-size: .28em;height: 3.57em; line-height:3.57em; text-align:right; margin-right:1em;}
 
-.com .errinfo{position:absolute; top:1em; left:30%;width:4.2em; height:1em; line-height:1em; z-index:8;}
-.com .errinfo p{ position:absolute; z-index:10; left:0; top:0; color:#ffdd00;width:100%; font-size:.24em;}
-.com .errinfo i{ height: 1.8em;width: 1.8em; margin:1.1em 0.5em 0 3em; float:left;}
-.com .errinfo i img{float:left;}
-.com .greybg{ position:absolute; z-index:9; left:0; top:0;width:100%; height:1em;background-color:#000;filter:alpha(opacity=70); -moz-opacity:0.7;  -khtml-opacity: 0.7;  opacity: 0.7;-moz-border-radius: 5px;  -webkit-border-radius: 5px; border-radius:5px;  }
+section .errcom{ position:relative;}
+.errcom .errinfo{position:absolute; top:.5em; left:10%;width:80%; height:1em; line-height:1em; z-index:8;}
+.errcom .errinfo p{ position:absolute; z-index:10; left:0; top:0; color:#ffdd00;width:100%; font-size:.24em;}
+.errcom .errinfo i{ height: 1.8em;width: 1.8em; margin:1.1em 0.5em 0 3em; float:left;}
+.errcom .errinfo i img{float:left;}
+.errcom .greybg,.com .greybg{ position:absolute; z-index:9; left:0; top:0;width:100%; height:1em;background-color:#000;filter:alpha(opacity=70); -moz-opacity:0.7;  -khtml-opacity: 0.7;  opacity: 0.7;-moz-border-radius: 5px;  -webkit-border-radius: 5px; border-radius:5px;  }
 .login-bottom p{width:90%; margin:0 auto; font-size:.24em;}
 
 .coupon img{display:block; margin:0 auto;}
@@ -324,6 +325,28 @@ section .box-right p{font-size: .28em;height: 3.57em; line-height:3.57em; text-a
 .orderDiv .cart-group li{ background-color:#f8f8f8;}
 .orderDiv .ware-t-box .fr{ font-size:.24em; padding-right:5px;} 
 .orderDiv .cart-bar .fr{ font-size:.24em;padding-right:5px;}  
+
+/*付款方式弹窗*/
+.mbox{width:300px; height:200px; background:#f8f8f8;border:1px solid #ccc; display:none;font-size:14px; position:absolute; z-index:9999; left:50%; margin-left:-150px; top:50%; margin-top:-100px;}
+.mbox .btnDelete,.mbox .btnPink{width:48%;}
+.mbox .btnPink,.mbox .btnDelete{ height:35px; line-height:35px; font-size:14px;}
+.mbox .btnDelete{background-color:#ccc; float:right;}
+.tcbg{width:100%; height:100%; background-color:#000; opacity:0.3;position:absolute; left:0px; top:0; z-index:999;}
+.mboxbtn{width:80%; margin:0 auto;}
+.mbtit{ text-align:right;width:90%; margin:5px auto 5px;}
+.mbcon{ padding-left:30px;height:110px; line-height:30px; padding-top:10px; color:#333;}
+.payimg{ height:2.143em; margin-top:.8em; margin-left:.5em;width:2.143em; display:inline-block;}
+.payimg1{background:url(../images/app-icon-fk2.png) no-repeat; background-size:cover;}
+.payimg2{background:url(../images/app-icon-fk1.png) no-repeat; background-size:cover;}
+.paybox .box-left label{ float:left;}
+.paybox .checkbox{ padding-top:.3em; padding-left:.3em; margin-right:0;}
+
+/*关闭*/
+.closeDiv{ padding-top:5px; height:25px; padding-right:10px;}
+.close-btn{ display:block; text-indent:-9999px; float:right;width:20px; height:20px; font-size:14px; text-align:center; line-height:25px;background:url(../images/app-icon-close.png) no-repeat; background-size:cover;}
+
+.popbox{ display: none; min-width: 320px; width: 100%; background-color: #f5f5f5; overflow: hidden; }
+#popbox-huose{z-index: 99;}
 /*媒体查询*/
 @media screen and (max-width:640px){
 	body,input{font-size:100px;}

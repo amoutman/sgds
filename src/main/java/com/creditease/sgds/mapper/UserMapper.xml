@@ -25,7 +25,7 @@
     select 
     <include refid="Base_Column_List" />
     from tb_user
-    where user_name = #{userName,jdbcType=VARCHAR}
+    where user_name = #{userName,jdbcType=VARCHAR} || mobile = #{userName,jdbcType=VARCHAR} || email = #{userName,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_user

@@ -25,10 +25,10 @@ public class BaseController {
 	
 	
 	/**获取当前模块视图资源路径*/
-	public String getResourcePath(){
-		return "/"+this.getClass().getPackage().getName()
-					.replaceAll("\\.controller$","").replace(".","/");
-	}
+//	public String getResourcePath(){
+//		return "/"+this.getClass().getPackage().getName()
+//					.replaceAll("\\.controller$","").replace(".","/");
+//	}
 	
 	/**获取当前模块实体类名(简单类名)*/
 	public String getModelClassSimpleName() {
@@ -85,16 +85,16 @@ public class BaseController {
 	/**
 	 * 导航至主操作页面
 	 * */
-	public ModelAndView index(){
-		try{
-			String viewName = this.getResourcePath()+"/index";
-			ModelAndView view = new ModelAndView(viewName);
-			return view;			
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("导航失败!");
-		}
-	}
+//	public ModelAndView index(){
+//		try{
+//			String viewName = this.getResourcePath()+"/index";
+//			ModelAndView view = new ModelAndView(viewName);
+//			return view;			
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			throw new RuntimeException("导航失败!");
+//		}
+//	}
 	
 	/**
 	 * 快速获取当前线程关联的request

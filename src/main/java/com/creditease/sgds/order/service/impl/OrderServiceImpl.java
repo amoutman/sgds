@@ -44,4 +44,14 @@ public class OrderServiceImpl implements OrderService {
 		orderDetailsMapper.insert(orderDetail);
 	}
 
+	@Override
+	public Order getOrderById(String orderId) throws Exception {
+		return orderMapper.selectByPrimaryKey(orderId);
+	}
+
+	@Override
+	public void updateOrderById(Order order) throws Exception {
+		orderMapper.updateByPrimaryKeySelective(order);
+	}
+
 }

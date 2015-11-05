@@ -8,5 +8,9 @@ public interface OrderService {
 	public void saveOrder(Order order) throws Exception;
 	
 	public void saveOrderDetails(OrderDetails orderDetails) throws Exception;
-
+	
+	public Order getOrderById(String orderId) throws Exception;
+	
+	public void updateOrderById(Order order) throws Exception;
+	
 }

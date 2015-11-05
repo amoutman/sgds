@@ -1,108 +1,88 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE>
-<html>
+<%@ include file="/resource/js/libs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
 <head>
 <base href="<%=basePath%>">
+<meta charset="UTF-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"name="viewport" /> 
+<meta content="yes" name="apple-mobile-web-app-capable" /> 
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no" name="format-detection" /> 
+<title>登录</title>
+<link rel="stylesheet" type="text/css" href="${ctx}/resource/css/global.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/resource/css/style.css" />
+<script type="text/javascript" src="${ctx}/resource/js/jquery-1.9.1.min.js"></script>
+<script src="${ctx}/resource/js/common.js"></script>
 
-<title>登录页面</title>
-
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="blank" />
-<meta name="format-detection" content="telephone=no" />
-<meta content="email=no" name="format-detection" />
-<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-<link href="${pageContext.request.contextPath }/resource/css/style.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath }/resource/js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/resource/js/style.js"></script>
+</head>
+<body>
+	<!-- 登录 start-->
+	<section class="mt10 clearfix">
+      <div class="errcom">
+       <div class="errinfo" style="display:none;">
+                    <p><i><img src="${ctx}/resource/images/icon_erro.png"></i> 请输入正确的手机号</p>
+                    <span class="greybg"></span>
+                </div>
+        </div>
+       <div class="com">
+			<div class="com-left">账号：</div>
+			<div class="com-right">
+				<input type="text" id="userName" placeholder="请输入您的账号 "/>
+			</div>
+		</div>
+        <div class="line"></div>
+		<div class="com">
+			<div class="com-left">密码：</div>
+			<div class="com-right">
+				<input type="password" id="passWord" class="fl" placeholder="请输入您的密码">
+			</div>
+            
+		</div>
+	</section>
+    <div class="login-bottom">	
+        <button onclick="checkLogin()">登录</button>
+        <p><a href="" class="fr">忘记密码</a> <a href="${ctx}/user/prepareRegist">注册</a></p>
+    </div>
+  <!-- 登录 end-->
+</body>
 <script type="text/javascript">
+
 	function checkLogin(){
-			var userInfo = $("#userInfo").val();
-			var password = $("#password").val();
-			
-			if(userInfo==""){
-				alert("用户名不能为空!");
-				return false;
-			}else if((/[ \t\n\x0B\f\r]+/).test(userInfo)){
-				alert("用户名不能包含空格!");
-				$("#userInfo").val("");
-				$("#password").val("");
-				return false;
-			}else if(password==""){
-				alert("密码不能为空!");
-				$("#userInfo").val("");
-				$("#password").val("");
-				return false;
-			}else{
-				$.post(
-					"user/login",
+		var userName = $("#userName").val();
+		var passWord = $("#passWord").val();
+		
+		if(userName=="" || passWord==""){
+			$(".errinfo p").html("<i><img src='${pageContext.request.contextPath }/resource/images/icon_erro.png'></i> 账号或密码不能为空");
+			$(".errinfo").css('display','block');
+			setTimeout("$('.errinfo').css('display','none')",2000);
+			return false;
+		}else{
+			$.post(
+					"${pageContext.request.contextPath }/user/login",
 					{
-						"userInfo":userInfo,
-						"password":password
+						"userName":userName,
+						"passWord":passWord
 					},
 					function(data){
-						if (data['success']) {
-								// 跳到登录成功的页面
-							if(data['isBackUrl']){
-								window.location.href="${pageContext.request.contextPath }/trans/toSendMoney";
-							}else{
-								window.location.href="${pageContext.request.contextPath }/account/toAccount";
-							}
-							
+						if (data.msg == "1") {
+							// 跳到登录成功的页面
+							window.location.href="${pageContext.request.contextPath }/index/toIndexPage";
 						} else {
 							// 失败了
-							alert(data['msg']);
-							$("#userInfo").val("");
-							$("#password").val("");
-							//alert(data.msg);
+							$("#passWord").val("");
+							$(".errinfo p").html("<i><img src='${pageContext.request.contextPath }/resource/images/icon_erro.png'></i> "+data.result);
+							$(".errinfo").css('display','block');
+							setTimeout("$('.errinfo').css('display','none')",2000);
 						}
 					},
 					"json"	
-				);
-			}
-	    }
+			);
+		}
+	}	
 </script>
-</head>
-
-<body>
-<div class="main">
-   <div class="container">
-      <div class="loginCon">
-         <div class="wrap">
-            <span class="logo"><a class="icon" href="${pageContext.request.contextPath}/user/toIndexPage"></a></span>
-            <div class="LogBox">
-                <div class="contlf">
-                  <ul class="s-hov" id="focus">
-                    <li><span class="label">请输入账户名</span><input type="text" class="input-txt" name="userInfo" id="userInfo"></li>
-                    <li><span class="label">请输入密码</span><input type="password" class="input-txt" name="password" id="password"></li>
-                  </ul>
-                  <p class="clearFix pt10"><span class="fl"><a class="reme" href="javascript:void(0)">记住我</a></span> <span class="fr"><a href="">忘记密码</a></span></p>
-                    <a href="javascript:void(0)" class="startBtn" onclick="checkLogin()">登 陆</a>
-                </div>
-                <div class="contrt">
-                   <span class="log-lab">您还没有remitter账户？ </span>
-                   <span class="log_easy"><a href="${pageContext.request.contextPath}/user/toRegister">立即注册</a></span>
-                   <span class="log-lab log-v">使用以下账户登录：</span>
-                   <p class="social">
-      <a href="" title="Twitter" target="_blank" class="icon icon-tw"></a> <a href="" title="Facebook" target="_blank" class="icon icon-fb"></a> <a href="" title="Google+" target="_blank" class="icon icon-gp"></a>
-      </p>
-                </div>
-            </div>
-         </div>
-      </div>
-      <div class="indexImg">
-         <div class="indexItems">
-          <div style="background-image: url(${pageContext.request.contextPath }/resource/images/indexBg.jpg)" class="item"></div>
-         </div>
-      </div>
-   </div>
-</div>
-</body>
 </html>
