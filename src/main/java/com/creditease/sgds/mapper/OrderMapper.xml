@@ -248,8 +248,8 @@
       	 </if>
   </select>
   <select id="getOrderCountByParams" parameterType="Map" resultType="Integer">
-  	select count(id)
-    from tb_order
+  	select count(a.id)
+    from tb_order a
     where created_by_id = #{userId,jdbcType=CHAR}
       <if test="status == 1">
       		and (a.status == 1 or a.status == 2)

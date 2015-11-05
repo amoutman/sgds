@@ -137,6 +137,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 	</div>
    <!-- 登录弹窗 end -->
+   <form action="${pageContext.request.contextPath}/order/orderConfirm" id="orderConfirmForm" method="post">
+   		<input type="hidden" name="productIds" id="productIds"/>
+   </form>
 </body>
 <script type="text/javascript">
 	function deleteProduct(){
@@ -283,8 +286,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		
-		window.location.href="";
+		$("#productIds").val(productIds);
+		$("orderConfirmForm").submit();
 	}
 	
 	$(function(){
