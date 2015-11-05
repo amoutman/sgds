@@ -29,7 +29,7 @@ public class ReceiverServiceImpl implements ReceiverService {
 	@Override
 	public Receiver getReceiverByUserId(String userId) {
 		// TODO Auto-generated method stub
-		return receiverMapper.getReceiverByUserId(userId);
+		return receiverMapper.selectDefReceiverByUserId(userId);
 	}
 
 	
