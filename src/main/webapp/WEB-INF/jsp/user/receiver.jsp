@@ -18,6 +18,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/css/style.css" />
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.9.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
+<script type="text/javascript">
+	function setDefaultAdd(obj){
+		var parents = $(obj).parents(".deliver-address");
+		if(parents.hasClass(".default-address")){
+			return;
+		}
+		var receiverId = $(obj).parent().find("#receiverId").val();
+		$.post{
+			"receiver/updateReceiverDefault",
+			{
+				"receiverId":receiverId
+			},
+			function(data){
+				if(data["success"]){
+					$(".default-address").removeClass("default-address");
+					$(obj).parents(".deliver-address").addClass("default-address");
+				}else{
+					alert(data["msg"]);
+				}
+			},
+			"json"
+		}
+	}
+</script>
 </head>
 <body>
  <!-- 收货地址 end -->
@@ -32,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          			</div>
          		<div class="address-edit">
           		    <a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
-           			<span class="set-default"><a href="">设为默认地址</a></span>
+           			<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
          		</div>
       			</div>
        		</c:if>
@@ -44,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          			</div>
          			<div class="address-edit">
            				<a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
-           				<span class="set-default"><a href="">设为默认地址</a></span>
+           				<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
          			</div>
       			</div>
        		</c:if>

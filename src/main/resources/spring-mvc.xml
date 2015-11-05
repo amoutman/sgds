@@ -25,7 +25,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="interceptors">
          <list>
          <bean class="com.creditease.sgds.interceptor.PreInterceptor">
-         	<property name="mappingUrl" value=".*/*.*"></property>
          </bean>
          </list>
          </property>

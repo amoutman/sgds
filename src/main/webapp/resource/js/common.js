@@ -50,3 +50,19 @@ $(function () {
     })
 		
 })
+
+
+// 弹窗
+function tickbox(closeID,boxID,typeID){
+		$('#'+closeID+'').click(function(){
+			$('#'+boxID+'').fadeOut();
+			return false;
+		});
+		$('#'+typeID+'').click(function(){
+			var h = $(document).height();
+			$('#'+boxID+'').css({ 'min-height': h });	
+			$('#'+boxID+'').center();
+			$('#'+boxID+'').fadeIn();
+			return false;
+		});
+}

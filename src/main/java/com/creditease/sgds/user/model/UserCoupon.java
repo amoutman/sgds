@@ -1,4 +1,4 @@
-package com.creditease.sgds.user.bean;
+package com.creditease.sgds.user.model;
 
 import java.util.Date;
 

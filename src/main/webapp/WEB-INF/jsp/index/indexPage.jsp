@@ -34,7 +34,7 @@ body{max-width: 640px;}
            <ul class="style-list clearfix">
            	<c:forEach var="category" items="${cList}">
               <li>
-                <a href="分类列表.html" class="app-link">
+                <a href="${pageContext.request.contextPath}/category/toProductCategory?categoryId=${category.id}" class="app-link">
                  <span class="app-icon"><img src="${pageContext.request.contextPath}/resource/${category.categoryPicPath}" alt="图标" /></span>
                  <span class="tit">${category.categoryName }</span>
                  </a>
@@ -47,7 +47,7 @@ body{max-width: 640px;}
     <!--热门水果 start-->
     <div class="app-tit clearfix">
         <span class="xline"></span>
-        <a href="" class="app-link"><img src="${pageContext.request.contextPath}/resource/images/app-tit.png" alt="标题" /></a>
+        <a href="javascript:void(0);" class="app-link"><img src="${pageContext.request.contextPath}/resource/images/app-tit.png" alt="标题" /></a>
     </div>
     
 
@@ -55,7 +55,7 @@ body{max-width: 640px;}
           <c:forEach var="hp" items="${hList}">
           
               <li>
-                <a href="详情.html" class="app-link">
+                <a href="${pageContext.request.contextPath}/product/toProductDetails?productId=${hp.id}" class="app-link">
                  <img src="${pageContext.request.contextPath}/resource/${hp.productPicPath}" alt="水果" />
                  </a>
               </li>

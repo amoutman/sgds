@@ -21,7 +21,8 @@ import com.creditease.sgds.product.bean.ProductReview;
 import com.creditease.sgds.product.service.CategoryService;
 import com.creditease.sgds.product.service.ProductService;
 import com.creditease.sgds.product.service.ReviewService;
-import com.creditease.sgds.user.bean.User;
+import com.creditease.sgds.user.model.User;
+import com.creditease.sgds.util.GlobalPara;
 import com.creditease.sgds.util.PKIDUtils;
 
 @RequestMapping("/product")
@@ -50,7 +51,7 @@ public class ProductController {
 	@RequestMapping("/toProductReview")
 	public ModelAndView toProductReview(HttpServletRequest request,@RequestParam("productId") String productId,@RequestParam("orderId") String orderId){
 		ModelAndView mv = new ModelAndView();
-		User user = (User)request.getSession().getAttribute("user");
+		User user = (User) request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		Product product = productService.getProductById(productId);
 		mv.addObject("product", product);
 		mv.addObject("orderId", orderId);
@@ -62,27 +63,5 @@ public class ProductController {
 	public ModelAndView toUnReview(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		return mv;
-	}
-	
-	@RequestMapping(value = "/insertReview", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> insertReview(HttpServletRequest request,@RequestParam("productId") String productId,@RequestParam("orderId") String orderId,
-			@RequestParam("level") String level,@RequestParam("descInfo") String descInfo){
-		User user = (User)request.getSession().getAttribute("user");
-		Map<String,Object> resultMap = new HashMap<String,Object>();
-		ProductReview pr = new ProductReview();
-		pr.setId(PKIDUtils.getUuid());
-		pr.setProductId(productId);
-		pr.setDescInfo(descInfo);
-		pr.setLevel(Integer.parseInt(level));
-		pr.setCreatedBy(user.getUserName());
-		pr.setCreatedById(user.getId());
-		pr.setCreatedByDate(new Date());
-		reviewService.insertReview(pr);
-		//更改订单是否评价状态
-		
-		resultMap.put("success", true);
-		resultMap.put("msg", "您已成功评价商品");
-		return resultMap;
 	}
 }

@@ -3,13 +3,11 @@ package com.creditease.sgds.user.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.creditease.sgds.user.bean.Receiver;
 import com.creditease.sgds.user.dao.ReceiverMapper;
+import com.creditease.sgds.user.model.Receiver;
 import com.creditease.sgds.user.service.ReceiverService;
 
 @Service("recevierService")
@@ -34,11 +32,6 @@ public class ReceiverServiceImpl implements ReceiverService {
 		return receiverMapper.getReceiverByUserId(userId);
 	}
 
-	@Override
-	public List<Receiver> getReceiverList(Map<String, Object> rMap) {
-		// TODO Auto-generated method stub
-		return receiverMapper.getReceiverList(rMap);
-	}
 	
 	public List<Receiver> getReceiverListByUserId(String userId){
 		return receiverMapper.getReceiverListByUserId(userId);
@@ -63,7 +56,6 @@ public class ReceiverServiceImpl implements ReceiverService {
 	}
 	
 	public void updateDefault(String id,String userId){
-	
 		receiverMapper.updateUnDefault(userId);
 		receiverMapper.updateDefault(id);
 	}

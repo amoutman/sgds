@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.creditease.sgds.user.bean.UserIntegral;
 import com.creditease.sgds.user.dao.UserIntegralMapper;
+import com.creditease.sgds.user.model.UserIntegral;
 import com.creditease.sgds.user.service.UserIntegralService;
 
 @Service("userIntegralService")

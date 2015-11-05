@@ -76,4 +76,10 @@ public class ProductServiceImpl implements ProductService {
 		productMapper.deleteProduct(id);
 	}
 
+	@Override
+	public List<Product> getProductsByProductIds(List<String> productIds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

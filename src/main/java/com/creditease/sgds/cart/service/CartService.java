@@ -24,6 +24,8 @@ public interface CartService {
 	
 	public void deleteCartDetails(String id);
 	
+	public List<CartDetails> getCartDetailsListByProdcutIds(String cartId, List<String> productIds);
+
 	public void deleteCartDetailsList(List<String> ids);
 	
 	public void updateCartDetails(CartDetails cd);

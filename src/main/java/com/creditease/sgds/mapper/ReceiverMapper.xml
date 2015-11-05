@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.creditease.sgds.user.dao.ReceiverMapper">
-    <resultMap id="BaseResultMap" type="com.creditease.sgds.user.bean.Receiver" >
-       <id column="id" property="id" jdbcType="CHAR" />
-       <result column="user_id" property="userId" jdbcType="CHAR" />
-       <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
-       <result column="receiver_sex" property="receiverSex" jdbcType="INTEGER" />
-       <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
-       <result column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
-       <result column="receiver_region" property="receiverRegion" jdbcType="VARCHAR" />
-       <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
-       <result column="note" property="note" jdbcType="VARCHAR" />
-       <result column="master_or_not" property="masterOrNot" jdbcType="INTEGER" />
-       <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
-       <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
-    </resultMap>
-    <sql id="Base_Column_List" >
-        id, user_id, receiver_name, receiver_sex, receiver_mobile, receiver_province, receiver_region, 
-        receiver_address, note, master_or_not, created_date, updated_date
-    </sql>
-    <select id="getReceiverListByUserId" parameterType="String" resultMap="BaseResultMap">
-    	select 
-		   <include refid="Base_Column_List" />
-    	  from tb_receiver
-    	 where user_id = #{userId}         
-    </select>
-    <insert id="insertReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.creditease.sgds.user.dao.ReceiverMapper" >
+  <resultMap id="BaseResultMap" type="com.creditease.sgds.user.model.Receiver" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_sex" property="receiverSex" jdbcType="INTEGER" />
+    <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+    <result column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
+    <result column="receiver_region" property="receiverRegion" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="master_or_not" property="masterOrNot" jdbcType="INTEGER" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, receiver_name, receiver_sex, receiver_mobile, receiver_province, receiver_region, 
+    receiver_address, note, master_or_not, created_date, updated_date
+  </sql>
+  <select id="getReceiverById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_receiver
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteReceiver" parameterType="java.lang.String" >
+    delete from tb_receiver
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <select id="selectDefReceiverByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_receiver
+    where user_id = #{userId,jdbcType=CHAR} and master_or_not = 0
+  </select>
+   <select id="getReceiverListByUserId" parameterType="String" resultMap="BaseResultMap">
+   	select 
+	   <include refid="Base_Column_List" />
+   	  from tb_receiver
+   	 where user_id = #{userId,jdbcType=CHAR} order by master_or_not        
+   </select>
+    <insert id="insertReceiver" parameterType="com.creditease.sgds.user.model.Receiver" >
     insert into tb_receiver
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -106,7 +120,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateReceiver" parameterType="com.creditease.sgds.user.bean.Receiver" >
+  <update id="updateReceiver" parameterType="com.creditease.sgds.user.model.Receiver" >
     update tb_receiver
     <set >
       <if test="receiverName != null" >

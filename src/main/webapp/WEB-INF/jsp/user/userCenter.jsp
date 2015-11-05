@@ -31,27 +31,27 @@ body{max-width: 640px;}
        </div>
         <ul class="usernav clearfix">
           <li class="dzf">
-             <a href="待支付.html">
+             <a href="${pageContext.request.contextPath}/userCenter/toUnPayOrder">
                <span class="navdemo">待支付</span>
-               <span class="num">3</span>
+               <span class="num">${unPayCount }</span>
              </a>
            </li>
           <li class="dsh">
-             <a href="待收货.html">
+             <a href="${pageContext.request.contextPath}/userCenter/toUnReceiveOrder">
                <span class="navdemo">待收货</span>
-               <span class="num">20</span>
+               <span class="num">${unReceiveCount }</span>
              </a>
            </li>
           <li class="ywc">
-             <a href="已完成.html">
+             <a href="${pageContext.request.contextPath}/userCenter/toCompletedOrder">
                <span class="navdemo">已完成</span>
-               <span class="num">34</span>
+               <span class="num">${completeCount }</span>
              </a>
            </li>
           <li class="dpj">
-             <a href="${pageContext.request.contextPath}/product/toUnReview">
+             <a href="${pageContext.request.contextPath}/userCenter/toUnEvaluatedOrder">
                <span class="navdemo">待评价</span>
-               <span class="num">8</span>
+               <span class="num">${unEvaluatedCount }</span>
              </a>
            </li>
         </ul>

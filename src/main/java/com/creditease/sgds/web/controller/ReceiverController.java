@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.creditease.sgds.user.bean.Receiver;
-import com.creditease.sgds.user.bean.User;
+import com.creditease.sgds.user.model.Receiver;
+import com.creditease.sgds.user.model.User;
 import com.creditease.sgds.user.service.ReceiverService;
+import com.creditease.sgds.util.GlobalPara;
 import com.creditease.sgds.util.PKIDUtils;
 
 @RequestMapping("/receiver")
@@ -28,7 +29,7 @@ public class ReceiverController {
 	@RequestMapping("/toReceiver")
 	public ModelAndView toReceiver(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
-		User user = (User)request.getSession().getAttribute("user");
+		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		List<Receiver> rList = receiverService.getReceiverListByUserId(user.getId());
 		mv.addObject("rList", rList);
 		mv.setViewName("user/receiver");
@@ -45,7 +46,7 @@ public class ReceiverController {
 	@RequestMapping("/insertReceiver")
 	public ModelAndView insertReceiver(HttpServletRequest request,@ModelAttribute("receiver") Receiver receiver){
 		ModelAndView mv = new ModelAndView();
-		User user = (User)request.getSession().getAttribute("user");
+		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		receiver.setId(PKIDUtils.getUuid());
 		receiver.setUserId(user.getId());
 		String address = receiver.getReceiverProvince();
@@ -79,7 +80,7 @@ public class ReceiverController {
 	
 	@RequestMapping("/updateReceiverDefault")
 	public void updateReceiverDefault(HttpServletRequest request,@RequestParam("receiverId") String receiverId){
-		User user = (User)request.getSession().getAttribute("user");
+		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		receiverService.updateDefault(receiverId,user.getId());
 	}
 }

@@ -42,20 +42,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          完成时间：${order.receivedDate }
       </div>
       <ul class="cart-group clearfix">
-      		<c:forEach var="product" items="${order.productList }">
+      		<c:forEach var="od" items="${order.odList }">
               <li class="ware-item">
-                <div class="ware-img"><a href=""><img src="${pageContext.request.contextPath}/resource/${product.productMasterPic}" alt="水果" /></a></div>
+                <div class="ware-img"><a href=""><img src="${pageContext.request.contextPath}/resource/${od.productMasterPic}" alt="水果" /></a></div>
                 <div class="ware-info">
                    <div class="ware-t-box clearfix">
-                       <span class="fr">X3</span>
+                       <span class="fr">X${od.count }</span>
                        <div class="ware-title">
-                           <span class="h2">${product.productName}</span>
-                           <span class="weight">${product.unit}</span>
+                           <span class="h2">${od.productName}</span>
+                           <span class="weight">${od.unit}</span>
                        </div>
                        
                    </div>
                    <div class="cart-bar">
-                     <span class="fr"> ¥${product.price}</span>
+                     <span class="fr"> ¥${od.productAmount}</span>
                      
                      </div>
                 </div>
@@ -77,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            <div class="pir-l">实际应付：</div>
            <div class="price"> 
                        <span class="price-sign">¥</span>
-                       <span class="price-num">${order.productTotalAmount }</span>
+                       <span class="price-num">${order.practticalCoping}</span>
            </div>
      </div>
      </div>

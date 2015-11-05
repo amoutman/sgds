@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.creditease.sgds.user.bean.UserCoupon;
 import com.creditease.sgds.user.dao.UserCouponMapper;
+import com.creditease.sgds.user.model.UserCoupon;
 import com.creditease.sgds.user.service.UserCouponService;
 
 @Service("userCouponService")

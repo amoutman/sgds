@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.creditease.sgds.user.dao.UserIntegralMapper" >
-  <resultMap id="UserIntegralMap" type="com.creditease.sgds.user.bean.UserIntegral" >
+  <resultMap id="BaseResultMap" type="com.creditease.sgds.user.model.UserIntegral" >
     <id column="id" property="id" jdbcType="CHAR" />
     <result column="user_id" property="userId" jdbcType="CHAR" />
     <result column="integral" property="integral" jdbcType="DECIMAL" />
@@ -12,7 +12,13 @@
   <sql id="Base_Column_List" >
     id, user_id, integral, direction, desc_info, created_date
   </sql>
-  <select id="getUserIntegralList" resultMap="UserIntegralMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_integral
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <select id="getUserIntegralList" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from tb_user_integral
@@ -27,7 +33,7 @@
     delete from tb_user_integral
     where id = #{id,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="com.creditease.sgds.user.bean.UserIntegral" >
+  <insert id="insert" parameterType="com.creditease.sgds.user.model.UserIntegral" >
     insert into tb_user_integral (id, user_id, integral, 
       direction, desc_info, created_date
       )
@@ -35,7 +41,7 @@
       #{direction,jdbcType=INTEGER}, #{descInfo,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.creditease.sgds.user.bean.UserIntegral" >
+  <insert id="insertSelective" parameterType="com.creditease.sgds.user.model.UserIntegral" >
     insert into tb_user_integral
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -78,7 +84,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.user.bean.UserIntegral" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.creditease.sgds.user.model.UserIntegral" >
     update tb_user_integral
     <set >
       <if test="userId != null" >
@@ -99,7 +105,7 @@
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.user.bean.UserIntegral" >
+  <update id="updateByPrimaryKey" parameterType="com.creditease.sgds.user.model.UserIntegral" >
     update tb_user_integral
     set user_id = #{userId,jdbcType=CHAR},
       integral = #{integral,jdbcType=DECIMAL},

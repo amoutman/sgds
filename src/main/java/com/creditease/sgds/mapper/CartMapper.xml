@@ -9,7 +9,7 @@
 			   a.product_id productId,
 			   a.count count,
 			   b.product_name productName,
-			   b.product_master_pic productMasterPic,
+			   b.product_master_pic_path productMasterPic,
 			   c.unit unit,
 			   c.price price	
 		  from tb_shopping_cart_details a,
@@ -25,6 +25,26 @@
 		       settle_amount settleAmount
 		  from tb_shopping_cart
 		 where user_id = #{id}  
+	</select>
+	<select id="getCartDetailsListByProdcutIds" parameterType="List" resultType="com.creditease.sgds.cart.bean.CartDetails">
+		select a.id id,
+			   a.shopping_cart_id shoppingCartId,
+			   a.product_id productId,
+			   a.count count,
+			   b.product_name productName,
+			   b.product_master_pic_path productMasterPic,
+			   c.unit unit,
+			   c.price price	
+		  from tb_shopping_cart_details a,
+		       tb_product b,
+		       tb_product_buy_ways c
+		 where a.product_id = b.id
+		   and a.product_id = c.product_id
+		   and a.shopping_cart_id = #{cartId}
+		   and product_id in 
+		 <foreach item="productIds" index="index" collection="list" open="(" separator="," close=")">
+    	  #{productIds}
+    	  </foreach>
 	</select>
     <insert id="insertCart" parameterType="com.creditease.sgds.cart.bean.Cart">
     	insert into tb_shopping_cart (id,user_id,settle_amount,created_date) values (#{id},#{userId},#{settleAmount},#{createdDate})

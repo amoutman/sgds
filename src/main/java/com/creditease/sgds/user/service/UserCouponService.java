@@ -3,7 +3,8 @@ package com.creditease.sgds.user.service;
 import java.util.List;
 import java.util.Map;
 
-import com.creditease.sgds.user.bean.UserCoupon;
+import com.creditease.sgds.user.model.UserCoupon;
+
 
 public interface UserCouponService {
 	

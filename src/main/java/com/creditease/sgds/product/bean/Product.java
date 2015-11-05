@@ -34,11 +34,11 @@ public class Product {
 	public void setProductDesc(String productDesc) {
 		this.productDesc = productDesc;
 	}
-	public String getProductMasterPic() {
-		return productMasterPic;
+	public String getProductMasterPicPath() {
+		return productMasterPicPath;
 	}
-	public void setProductMasterPic(String productMasterPic) {
-		this.productMasterPic = productMasterPic;
+	public void setProductMasterPicPath(String productMasterPicPath) {
+		this.productMasterPicPath = productMasterPicPath;
 	}
 	public int getStatus() {
 		return status;
@@ -99,7 +99,7 @@ public class Product {
 	private String productName;
 	private String productCode;
 	private String productDesc;
-	private String productMasterPic;
+	private String productMasterPicPath;
 	private int status;
 	private int couponSupport;
 	private int activityProduct;

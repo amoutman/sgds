@@ -73,4 +73,9 @@ public class CartServiceImpl implements CartService {
 		cartMapper.updateCartDetails(cd);
 	}
 
+	@Override
+	public List<CartDetails> getCartDetailsListByProdcutIds(String cartId, List<String> productIds) {
+		return null;
+	}
+
 }
