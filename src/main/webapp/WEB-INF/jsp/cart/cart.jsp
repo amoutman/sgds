@@ -246,7 +246,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function login(){
 		var userName = $("#userName").val();
 		var password = $("#password").val();
-		alert(userName);
 		$.post(
 			"toLogin",
 			{
@@ -255,7 +254,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			},
 			function(data){
 				if(data["success"]){
-					alert("ssss");
 					toOrder();
 				}else{
 					alert("用户名或密码错误");
