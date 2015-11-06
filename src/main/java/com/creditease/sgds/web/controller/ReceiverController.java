@@ -47,6 +47,10 @@ public class ReceiverController {
 	public ModelAndView insertReceiver(HttpServletRequest request,@ModelAttribute("receiver") Receiver receiver){
 		ModelAndView mv = new ModelAndView();
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
+		List<Receiver> rList = receiverService.getReceiverListByUserId(user.getId());
+		if(rList == null){
+			receiver.setMasterOrNot(0);
+		}
 		receiver.setId(PKIDUtils.getUuid());
 		receiver.setUserId(user.getId());
 		String address = receiver.getReceiverProvince();

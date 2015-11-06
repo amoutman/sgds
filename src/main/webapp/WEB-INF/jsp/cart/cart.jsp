@@ -119,14 +119,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <div class="com">
 			<div class="com-left">账号：</div>
 			<div class="com-right">
-				<input type="text" placeholder="请输入您的账号 "/>
+				<input type="text" id="userName" placeholder="请输入您的账号 "/>
 			</div>
 		</div>
         <div class="line"></div>
 		<div class="com">
 			<div class="com-left">密码：</div>
 			<div class="com-right">
-				<input type="password" class="fl" placeholder="请输入您的密码">
+				<input type="password" id="password" class="fl" placeholder="请输入您的密码">
 			</div>
             
 		</div>
@@ -161,23 +161,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			}
 		});
-		if(confirm("确定要删除这些商品？")){
-			$.post(
-				"deleteProductFromCart",
-				{
-					"productIds":productIds,
-					"cdIds":cdIds
-				},
-				function(data){
-					if(data["success"]){
-						$("i[name='isCheck']").each(function(){
-							$(this).parents(".ware-item").html("");
-						});
-					}
-				},
-				"json"
-				)
-			}
+		if(productIds!=""){
+			if(confirm("确定要删除这些商品？")){
+				$.post(
+					"deleteProductFromCart",
+					{
+						"productIds":productIds,
+						"cdIds":cdIds
+					},
+					function(data){
+						if(data["success"]){
+							$("i[name='isCheck']").each(function(){
+								$(this).parents(".ware-item").html("");
+							});
+						}
+					},
+					"json"
+					)
+				}
+		}
+		
 	}
 	
 	function addCount(obj){
@@ -242,8 +245,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function login(){
 		var userName = $("#userName").val();
-		var passworde = $("#password").val();
-		
+		var password = $("#password").val();
+		alert(userName);
 		$.post(
 			"toLogin",
 			{
@@ -252,6 +255,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			},
 			function(data){
 				if(data["success"]){
+					alert("ssss");
 					toOrder();
 				}else{
 					alert("用户名或密码错误");
@@ -262,17 +266,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function toBuyProduct(){
-		$.post(
-			"toBuyProduct",
-			function(data){
-				if(data["success"]){
-					toOrder();
+		var productIds = "";
+		$("i[name='isCheck']").each(function(){
+			if($(this).hasClass("checked") == true){
+				if(productIds == ""){
+					productIds = $(this).parent().find("#productId").val();
 				}else{
-					showLogin('popbox-login');
+					productIds = productIds +"," +$(this).parent().find("#productId").val();
 				}
-			},
-			"json"
-		)
+			}
+		});
+		if(productIds!=""){
+			$.post(
+				"toBuyProduct",
+				function(data){
+					if(data["success"]){
+						toOrder();
+					}else{
+						showLogin('popbox-login');
+					}
+				},
+				"json"
+			)
+		}else{
+			alert("请选择需要购买的商品");
+		}
 	}
 	
 	function toOrder(){
@@ -286,8 +304,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$("#productIds").val(productIds);
-		$("orderConfirmForm").submit();
+		if(productIds!=""){
+			$("#productIds").val(productIds);
+			$("#orderConfirmForm").submit();
+		}
 	}
 	
 	$(function(){

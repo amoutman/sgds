@@ -48,16 +48,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <section class="bgGrey mb110">
       <div class="address-tit">收件地址</div>
        <c:forEach var="receiver" items="${rList}">
+       		<div class="deliver-address default-address clearfix">
+         			<div class="address-left">
+             			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 1 }">先生</c:if><c:if test="${receiver.receiverSex == 0}">女士</c:if>）  ${receiver.receiverMobile }</div>
+             			<div class="address-info">${receiver.receiverAddress }</div>
+         			</div>
+         			<div class="address-edit">
+          		    	<a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
+           				<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
+         			</div>
+      			</div>
        		<c:if test="${receiver.masterOrNot == 0 }">
        			<div class="deliver-address default-address clearfix">
          			<div class="address-left">
              			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 0 }">先生</c:if><c:if test="${receiver.receiverSex == 1}">女士</c:if>）  ${receiver.receiverMobile }</div>
              			<div class="address-info">${receiver.receiverAddress }</div>
          			</div>
-         		<div class="address-edit">
-          		    <a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
-           			<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
-         		</div>
+         			<div class="address-edit">
+          		    	<a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
+           				<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
+         			</div>
       			</div>
        		</c:if>
        		<c:if test="${receiver.masterOrNot == 1 }">

@@ -89,7 +89,10 @@ public class UserCenterController {
 		int couponCount = userCouponService.getUserCouponCount(ucMap);
 		mv.addObject("couponCount", couponCount);
 		
-		int integral = userIntegralService.getUserIntegralSum(user.getId());
+		int integral = 0;
+		if(userIntegralService.getUserIntegralSum(user.getId()) != null){
+			integral = userIntegralService.getUserIntegralSum(user.getId());
+		}
 		mv.addObject("integral", integral);
 		
 		mv.addObject("user", user);
