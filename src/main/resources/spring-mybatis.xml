@@ -13,13 +13,9 @@
 	<!-- 配置数据源 -->
 	 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" >
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-       <!--   <property name="url" value="jdbc:mysql://58.64.197.111:3306/kjzf" />
-        <property name="username" value="dba" />
-        <property name="password" value="test88848411@111" />-->
-        
         <property name="url" value="jdbc:mysql://127.0.0.1:3306/sgds" />
         <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="password" value="123456" />
         <property name="testOnBorrow" value="true" />
         <property name="maxActive" value="30" />
         <property name="initialSize" value="10" />

@@ -26,7 +26,7 @@
 		  from tb_shopping_cart
 		 where user_id = #{id}  
 	</select>
-	<select id="getCartDetailsListByProdcutIds" parameterType="List" resultType="com.creditease.sgds.cart.bean.CartDetails">
+	<select id="getCartDetailsListByProdcutIds" resultType="com.creditease.sgds.cart.bean.CartDetails">
 		select a.id id,
 			   a.shopping_cart_id shoppingCartId,
 			   a.product_id productId,
@@ -41,9 +41,9 @@
 		 where a.product_id = b.id
 		   and a.product_id = c.product_id
 		   and a.shopping_cart_id = #{cartId}
-		   and product_id in 
-		 <foreach item="productIds" index="index" collection="list" open="(" separator="," close=")">
-    	  #{productIds}
+		   and a.product_id in 
+		 <foreach item="productId" index="index" collection="productIds" open="(" separator="," close=")">
+    	  #{productId}
     	  </foreach>
 	</select>
     <insert id="insertCart" parameterType="com.creditease.sgds.cart.bean.Cart">

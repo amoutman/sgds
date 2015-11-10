@@ -6,7 +6,7 @@
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="receiver_id" property="receiverId" jdbcType="CHAR" />
     <result column="distribution_mode" property="distributionMode" jdbcType="INTEGER" />
-    <result column="eta" property="eta" jdbcType="TIMESTAMP" />
+    <result column="eta" property="eta" jdbcType="VARCHAR" />
     <result column="pay_mode" property="payMode" jdbcType="INTEGER" />
     <result column="coupon_id" property="couponId" jdbcType="CHAR" />
     <result column="product_total_amount" property="productTotalAmount" jdbcType="DECIMAL" />
@@ -43,7 +43,7 @@
       created_date, created_by_id, created_by, 
       update_date, received_date)
     values (#{id,jdbcType=CHAR}, #{orderNo,jdbcType=VARCHAR}, #{receiverId,jdbcType=CHAR}, 
-      #{distributionMode,jdbcType=INTEGER}, #{eta,jdbcType=TIMESTAMP}, #{payMode,jdbcType=INTEGER}, 
+      #{distributionMode,jdbcType=INTEGER}, #{eta,jdbcType=VARCHAR}, #{payMode,jdbcType=INTEGER}, 
       #{couponId,jdbcType=CHAR}, #{productTotalAmount,jdbcType=DECIMAL}, #{carriage,jdbcType=DECIMAL}, 
       #{couponAmount,jdbcType=DECIMAL}, #{practticalCoping,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{createdById,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
@@ -118,7 +118,7 @@
         #{distributionMode,jdbcType=INTEGER},
       </if>
       <if test="eta != null" >
-        #{eta,jdbcType=TIMESTAMP},
+        #{eta,jdbcType=VARCHAR},
       </if>
       <if test="payMode != null" >
         #{payMode,jdbcType=INTEGER},
@@ -171,7 +171,7 @@
         distribution_mode = #{distributionMode,jdbcType=INTEGER},
       </if>
       <if test="eta != null" >
-        eta = #{eta,jdbcType=TIMESTAMP},
+        eta = #{eta,jdbcType=VARCHAR},
       </if>
       <if test="payMode != null" >
         pay_mode = #{payMode,jdbcType=INTEGER},
@@ -217,7 +217,7 @@
     set order_no = #{orderNo,jdbcType=VARCHAR},
       receiver_id = #{receiverId,jdbcType=CHAR},
       distribution_mode = #{distributionMode,jdbcType=INTEGER},
-      eta = #{eta,jdbcType=TIMESTAMP},
+      eta = #{eta,jdbcType=VARCHAR},
       pay_mode = #{payMode,jdbcType=INTEGER},
       coupon_id = #{couponId,jdbcType=CHAR},
       product_total_amount = #{productTotalAmount,jdbcType=DECIMAL},

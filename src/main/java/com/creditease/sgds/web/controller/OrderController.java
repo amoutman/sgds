@@ -5,9 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -117,17 +121,19 @@ public class OrderController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/changeAddr",  method = RequestMethod.POST)
-	public ModelAndView changeAddress(){
+	public Object changeAddress(){
+		Map<String,Object> map = new HashMap<String,Object>(); 
 		try {
 			//获取用户信息
 			User user = (User) this.getRequest().getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 			//初始化视图
-			ModelAndView view = new ModelAndView();
-			view.addObject("receivers", userService.selectReceiversByUserId(user.getId()));
-			return view;
+			map.put("receivers", userService.selectReceiversByUserId(user.getId()));
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("变更地址模块处理失败!");
+			map = new HashMap<String,Object>();
+			map.put(GlobalPara.AJAX_KEY, "变更地址模块处理失败!");
+			return map;
 		}
 	}
 	
@@ -146,18 +152,21 @@ public class OrderController extends BaseController{
 		}
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/updateAddr")
-	public ModelAndView updateAddr(@ModelAttribute("receiver") Receiver receiver, @RequestParam("productIds")String productIds){
+	public Object updateAddr(@ModelAttribute("receiver") Receiver receiver, @RequestParam("productIds")String productIds){
+		Map<String,Object> map = new HashMap<String,Object>();
 		try {
 			receiver.setUpdatedDate(new Date());
 			receiverService.updateReceiver(receiver);
-			ModelMap mmap = new ModelMap(); 
-			mmap.addAttribute("productIds", productIds);
-			mmap.addAttribute("receiverId", receiver.getId());
-			return new ModelAndView("redirect:/order/orderConfirm", mmap);  
+			map.put("productIds", productIds);
+			map.put("receiverId", receiver.getId());
+			return map;  
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("修改地址模块异常!");
+			map = new HashMap<String,Object>();
+			map.put(GlobalPara.AJAX_KEY, "修改地址模块异常!");
+			return map;
 		}
 	}
 	
@@ -170,29 +179,44 @@ public class OrderController extends BaseController{
 		return mv;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/createAddr")
-	public ModelAndView createAddr(@ModelAttribute("receiver") Receiver receiver, @RequestParam("productIds")String productIds){
-		//获取用户信息
-		User user = (User) this.getRequest().getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
-		receiver.setId(PKIDUtils.getUuid());
-		receiver.setUserId(user.getId());
-		String address = receiver.getReceiverProvince();
-		StringBuffer adSb = new StringBuffer(address);
-		adSb.append(receiver.getReceiverRegion());
-		adSb.append(receiver.getReceiverAddress());
-		receiver.setReceiverAddress(adSb.toString());
-		receiver.setCreatedDate(new Date());
-		receiverService.insertReceiver(receiver);
-		ModelMap mmap = new ModelMap(); 
-		mmap.addAttribute("productIds", productIds);
-		mmap.addAttribute("receiverId", receiver.getId());
-		return new ModelAndView("redirect:/order/orderConfirm", mmap);  
+	public Object createAddr(@ModelAttribute("receiver") Receiver receiver, @RequestParam("productIds")String productIds, HttpServletResponse response){
+		Map<String,Object> map = new HashMap<String,Object>();
+		try {
+			//获取用户信息
+			User user = (User) this.getRequest().getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
+			List<Receiver> receivers = receiverService.getReceiverListByUserId(user.getId());
+			receiver.setId(PKIDUtils.getUuid());
+			receiver.setUserId(user.getId());
+			String address = receiver.getReceiverProvince();
+			StringBuffer adSb = new StringBuffer(address);
+			adSb.append(receiver.getReceiverRegion());
+			adSb.append(receiver.getReceiverAddress());
+			receiver.setReceiverAddress(adSb.toString());
+			receiver.setCreatedDate(new Date());
+			receiver.setUpdatedDate(new Date());
+			if(receivers.size() == 0){
+				receiver.setMasterOrNot(BusConstants.RECEIVER_ISNOT_DEFAULT_YES);
+			}
+			receiverService.insertReceiver(receiver);
+			
+			map.put(GlobalPara.AJAX_KEY,GlobalPara.AJAX_SUCCESS);
+			map.put("productIds", productIds);
+			map.put("receiverId", receiver.getId());
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map = new HashMap<String,Object>(); 
+			map.put(GlobalPara.AJAX_KEY,"创建地址失败!");
+			return map;
+		}
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/checkCoupon")
-	public ModelAndView checkCoupon(@RequestParam("couponId")String couponId,@RequestParam("productIds")String productIds){
-		ModelAndView view = new ModelAndView();
+	public Object checkCoupon(@RequestParam("couponId")String couponId,@RequestParam("productIds")String productIds){
+		Map<String,Object> map = new HashMap<String,Object>(); 
 		try {
 			//获取用户信息
 			User user = (User) this.getRequest().getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
@@ -211,23 +235,24 @@ public class OrderController extends BaseController{
 			//获取代金券金额
 			UserCoupon coupon = userService.getUserCouponById(couponId);
 			//计算实际应付金额
-			Double actualAmountPay = BigDecimalUtils.sub(totalAmount, Double.valueOf(coupon.getAmount()));
+			Double actualAmountPay = BigDecimalUtils.round(BigDecimalUtils.sub(totalAmount, Double.valueOf(coupon.getAmount())), 2);
 			
-			//初始化视图
-			view.addObject(GlobalPara.AJAX_KEY,GlobalPara.AJAX_SUCCESS);
-			view.addObject("actualAmountPay", actualAmountPay);
-			return view;
+			map.put(GlobalPara.AJAX_KEY,GlobalPara.AJAX_SUCCESS);
+			map.put("actualAmountPay", actualAmountPay);
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			view = new ModelAndView();
-			view.addObject(GlobalPara.AJAX_KEY,GlobalPara.AJAX_FALSE+"操作失败!");
-			return view;
+			map = new HashMap<String,Object>(); 
+			map.put(GlobalPara.AJAX_KEY,GlobalPara.AJAX_FALSE+"操作失败!");
+			return map;
 		}
 	}
 	
-	@RequestMapping(value = "/orderCommit",  method = RequestMethod.POST)
-	public ModelAndView orderCommit(@ModelAttribute("order")Order order) {
+	@ResponseBody
+	@RequestMapping(value = "/orderCommit", method=RequestMethod.POST)
+	public Object orderCommit(@ModelAttribute("order") Order order) {
 		try {
+			Map<String,String> map = new HashMap<String,String>(); 
 			//获取用户信息
 			User user = (User) this.getRequest().getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 			//转换为List
@@ -303,21 +328,24 @@ public class OrderController extends BaseController{
 				cartService.deleteCartDetailsList(cardDetailIds);
 			}
 			
-			ModelMap mmap = new ModelMap(); 
-			mmap.addAttribute("orderId", order.getId());
-			return new ModelAndView("redirect:/order/prepareOrderPay", mmap); 
+			map.put(GlobalPara.AJAX_KEY, GlobalPara.AJAX_SUCCESS);
+			map.put("orderId", order.getId());
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("订单保存模块处理出错!");
+			Map<String,String> map = new HashMap<String,String>();
+			map.put(GlobalPara.AJAX_KEY,"操作失败!");
+			return map;
 		}
 	}
 	
-	@RequestMapping(value = "/prepareOrderPay",  method = RequestMethod.POST)
+	@RequestMapping(value = "/prepareOrderPay")
 	public ModelAndView prepareOrderPay(@RequestParam("orderId")String orderId){
 		try {
 			ModelAndView mv = new ModelAndView();
-			mv.addObject("orderId", orderId);
-			mv.setViewName("order/updateReceiver");
+			Order order = orderService.getOrderById(orderId);
+			mv.addObject("order", order);
+			mv.setViewName("order/orderPay");
 			return mv;
 		} catch (Exception e) {
 			e.printStackTrace();

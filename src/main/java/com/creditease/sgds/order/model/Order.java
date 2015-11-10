@@ -15,7 +15,7 @@ public class Order {
 
     private Integer distributionMode;
 
-    private Date eta;
+    private String eta;
 
     private Integer payMode;
 
@@ -113,11 +113,11 @@ public class Order {
         this.distributionMode = distributionMode;
     }
 
-    public Date getEta() {
+    public String getEta() {
         return eta;
     }
 
-    public void setEta(Date eta) {
+    public void setEta(String eta) {
         this.eta = eta;
     }
 

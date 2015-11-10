@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="checkbox fr">
 			<label>全选</label><i class="ico-checkbox"></i>
 			</div>
-            <h2>订单列表</h2>
+            <h2>购物车</h2>
       </div>
      
        <!--产品列表 start-->
@@ -287,7 +287,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 		$("#productIds").val(productIds);
-		$("orderConfirmForm").submit();
+		$("#orderConfirmForm").submit();
 	}
 	
 	$(function(){

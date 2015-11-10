@@ -17,11 +17,12 @@
 <script src="${ctx}/resource/js/common.js"></script>
 <script type="text/javascript">
 	function selectCashOnDelivery(){
-		$(".mbox").show();
+		$(".tcbg").css('display','block');
+		$(".mbox").css('display','block');
 	}
 	
-	function confirmCashOnDelivery(orderId){
-		$.post("${pageContext.request.contextPath}/order/orderPay", { "orderId" : orderId, "payMode" : 2 } );
+	function confirmCashOnDelivery(){
+		$("#orderPayForm").submit();
 	}
 </script>
 </head>
@@ -52,22 +53,24 @@
     </section>
     
    <!-- 按钮 end -->
-   
+   <form action="${ctx}/order/orderPay" id="orderPayForm" method="post">
+     <input type="hidden" name="orderId" id="orderId" value="${order.id}" />
+     <input type="hidden" name="payMode" id="payMode" value="2" />
+   </form>
    
    <!--弹窗-->
-   <div class="tcbg"></div>
+   <div class="tcbg" style="display:none;"></div>
    <div class="mbox" style="display:none;">
              <div class="mbcon">
                  <p>付款方式：<span class="colorred">货到付款</span></p>
-                 <p>付款总额：<span class="coloryello font20">230￥</span></p>
+                 <p>付款总额：<span class="coloryello font20">${order.practticalCoping}￥</span></p>
              </div>
              <div class="mboxbtn">
-             <a href="" class="btnPink" onclick="confirmCashOnDelivery(${orderId})">确认</a> <a href="#" class="btnDelete">取消</a>
+             <a href="javascript:void(0);" class="btnPink" onclick="confirmCashOnDelivery(${orderId})">确认</a> <a href="#" class="btnDelete">取消</a>
              </div>
    </div>
    
 
-   
 </body>
 
 </html>

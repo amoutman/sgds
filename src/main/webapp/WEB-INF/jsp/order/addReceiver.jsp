@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -58,16 +54,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					required:"收货人街道楼层门牌号不能为空"
 				}
 			},
-		  	errorPlacement: function(error, element) {
-	 				var span = $("<span class='icon errorinfo' />").append(error);
-	 				span.appendTo(element.parent());
-	 		}
+			/* 重写错误显示消息方法,以alert方式弹出错误消息 */  
+			showErrors: function(errorMap, errorList) {  
+			    			var msg = "";  
+			            	$.each( errorList, function(i,v){  
+			            		
+			              		msg += (v.message+"\r\n"); 
+			              		//return false;
+			           		});  
+			      		if(msg!=""){
+			      			alert(msg);  
+			    			//错误显示
+			    			//$(".errinfo p").html("<i><img src='${pageContext.request.contextPath}/resource/images/icon_erro.png'></i> " + msg);
+			    			//$(".errinfo").css('display','block');
+			    			//setTimeout("$('.errinfo').css('display','none')",2000);
+			      		}
+			},  
+			onfocusout: false,
+			onkeyup:false,
+			onclick:false
+
 			
 		});
 		
 		$("#insertBtn").click(function(e){
-			if($('#receiverForm').valid()){
-				$('#receiverForm').submit();
+			if($("#receiverForm").valid()){
+				$.post(
+						"${pageContext.request.contextPath}/order/createAddr",
+						$("#receiverForm").serialize(),
+						function(data){
+							if (data.msg == "1") {
+								// 跳到登录成功的页面
+								$("#productIds").val(data.productIds);
+								$("#receiverId").val(data.receiverId);
+								$("#orderConfirmForm").submit();
+							} else {
+								// 失败了
+								$(".errinfo p").html("<i><img src='${pageContext.request.contextPath }/resource/images/icon_erro.png'></i> "+data.msg);
+								$(".errinfo").css('display','block');
+								setTimeout("$('.errinfo').css('display','none')",2000);
+							}
+						},
+						"json"	
+				);
 			}
 		});
 	})
@@ -80,20 +109,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</section>
     
     <section class="mb110">
-    <form action="${pageContext.request.contextPath}/order/insertReceiver" id="receiverForm" method="post">
+    <form action="${pageContext.request.contextPath}/order/createAddr" id="receiverForm" method="post">
       <div class="m-con">
             <div class="m-app-icon">
                <span class="app-icon app-icon1"></span>
             </div>
-            <input type="hidden" name="productIds" value="${productIds}"/>
             <div class="m-wid2"><input type="text" id="name-tpye" name="receiverName" placeholder="收货人姓名" /></div>
 			<div class="radio">
 						<input id="check3" type="radio" name="receiverSex" value="0" checked>
-						<label for="check3">妹纸</label>
+						<label for="check3">欧巴</label>
 			</div>
 			<div class="radio">
 						<input id="check4" type="radio" name="receiverSex" value="1">
-						<label for="check4">欧巴</label>
+						<label for="check4">妹纸</label>
 			</div>
 		</div>
         <div class="m-con">
@@ -122,8 +150,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="m-wid"><input type="text" id="name-tpye" name="note" placeholder="备注" /></div>
 		</div>
+		<input type="hidden" name="productIds" value="${productIds}"/>
 	</form>
     </section>
+   	<form action="${pageContext.request.contextPath}/order/orderConfirm" id="orderConfirmForm" method="post">
+      	  <input type="hidden" name="receiverId" id="receiverId" value="${receiverId}" />
+	      <input type="hidden" name="productIds" id="productIds" value="${productIds}" />
+    </form>
     <!-- 添加地址 end -->
 
         
@@ -132,5 +165,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
              <a href="javascript:void(0);" id="insertBtn" class="btnPink">确认添加</a>
    </div>
    <!-- 按钮 end -->
+   
+   <!-- 错误信息 end -->
+   <div class="payErr">
+     <div class="errcom" style="display:none;">
+       <div style="top:1em;" class="errinfo">
+           <p><i><img src="${pageContext.request.contextPath}/resource/images/icon_erro.png"></i> 修改失败!</p>
+           <span class="greybg"></span>
+       </div>
+     </div>
+   </div>
+   <!-- 错误信息 end --> 
 </body>
 </html>

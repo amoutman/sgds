@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -59,16 +55,41 @@ $(document).ready(function(){
 				required:"收货人街道楼层门牌号不能为空"
 			}
 		},
-	  	errorPlacement: function(error, element) {
- 				var span = $("<span class='icon errorinfo' />").append(error);
- 				span.appendTo(element.parent());
- 		}
+		/* 重写错误显示消息方法,以alert方式弹出错误消息 */  
+		showErrors: function(errorMap, errorList) {  
+		    			var msg = "";  
+		            	$.each( errorList, function(i,v){  
+		            		
+		              		msg += (v.message+"\r\n");  
+		           		});  
+		      		if(msg!="") alert(msg);  
+		},  
+		onfocusout: false,
+		onkeyup:false,
+		onclick:false
 		
 	});
 	
 	$("#updateBtn").click(function(e){
-		if($('#updateForm').valid()){
-			$('#updateForm').submit();
+		if($("#updateForm").valid()){
+			$.post(
+					"${pageContext.request.contextPath}/order/updateAddr",
+					$("#updateForm").serialize(),
+					function(data){
+						if (data.msg == "1") {
+							// 跳到登录成功的页面
+							$("#productIds").val(data.productIds);
+							$("#receiverId").val(data.receiverId);
+							$("#orderConfirmForm").submit();
+						} else {
+							// 失败了
+							//$(".errinfo p").html("<i><img src='${pageContext.request.contextPath }/resource/images/icon_erro.png'></i> "+data.msg);
+							//$(".errinfo").css('display','block');
+							//setTimeout("$('.errinfo').css('display','none')",2000);
+						}
+					},
+					"json"	
+			);
 		}
 	});
 })
@@ -86,7 +107,6 @@ $(document).ready(function(){
             <div class="m-app-icon">
                <span class="app-icon app-icon1"></span>
             </div>
-            <input type="hidden" name="productIds" value="${productIds}"/>
             <div class="m-wid2"><input type="text" id="name-tpye" name="receiverName" value="${receiver.receiverName }" placeholder="收货人姓名" /></div>
 			<div class="radio">
 						<input id="check3" type="radio" name="receiverSex" value="check3" <c:if test="${receiver.receiverSex == 1}">checked</c:if> >
@@ -125,6 +145,10 @@ $(document).ready(function(){
 		</div>
 		</from>
     </section>
+    <form action="${pageContext.request.contextPath}/order/orderConfirm" id="orderConfirmForm" method="post">
+      	  <input type="hidden" name="receiverId" id="receiverId" value="${receiverId}" />
+	      <input type="hidden" name="productIds" id="productIds" value="${productIds}" />
+    </form>
     <!-- 修改地址 end -->
 
         
@@ -133,5 +157,16 @@ $(document).ready(function(){
              <a href="javascript:void(0);" id="updateBtn" class="btnPink">确认修改</a>
    </div>
    <!-- 按钮 end -->
+   
+   <!-- 错误信息 end -->
+   <div class="payErr">
+     <div class="errcom" style="display:none;">
+       <div style="top:1em;" class="errinfo">
+           <p><i><img src="${pageContext.request.contextPath}/resource/images/icon_erro.png"></i> 修改失败!</p>
+           <span class="greybg"></span>
+       </div>
+     </div>
+   </div>
+   <!-- 错误信息 end -->
 </body>
 </html>
