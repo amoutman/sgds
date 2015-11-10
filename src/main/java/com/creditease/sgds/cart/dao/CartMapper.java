@@ -30,4 +30,6 @@ public interface CartMapper {
 	public void deleteCartDetailsList(List<String> ids);
 	
 	public void updateCartDetails(CartDetails cd);
+	
+	public CartDetails getCartDetailsByProdcutId(Map<String,Object> cdMap);
 }

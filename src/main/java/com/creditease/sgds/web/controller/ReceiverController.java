@@ -1,7 +1,9 @@
 package com.creditease.sgds.web.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.creditease.sgds.user.model.Receiver;
@@ -48,16 +52,13 @@ public class ReceiverController {
 		ModelAndView mv = new ModelAndView();
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		List<Receiver> rList = receiverService.getReceiverListByUserId(user.getId());
-		if(rList == null){
+		if(rList.isEmpty()){
 			receiver.setMasterOrNot(0);
+		}else{
+			receiver.setMasterOrNot(1);
 		}
 		receiver.setId(PKIDUtils.getUuid());
 		receiver.setUserId(user.getId());
-		String address = receiver.getReceiverProvince();
-		StringBuffer adSb = new StringBuffer(address);
-		adSb.append(receiver.getReceiverRegion());
-		adSb.append(receiver.getReceiverAddress());
-		receiver.setReceiverAddress(adSb.toString());
 		receiver.setCreatedDate(new Date());
 		receiverService.insertReceiver(receiver);
 		mv.setViewName("redirect:/receiver/toReceiver");
@@ -69,7 +70,7 @@ public class ReceiverController {
 		ModelAndView mv = new ModelAndView();
 		Receiver receiver = receiverService.getReceiverById(receiverId);
 		mv.addObject("receiver", receiver);
-		mv.setViewName("receiver/updateReceiver");
+		mv.setViewName("user/updateReceiver");
 		return mv;
 	}
 	
@@ -82,9 +83,13 @@ public class ReceiverController {
 		return mv;
 	}
 	
-	@RequestMapping("/updateReceiverDefault")
-	public void updateReceiverDefault(HttpServletRequest request,@RequestParam("receiverId") String receiverId){
+	@RequestMapping(value = "/updateReceiverDefault",method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> updateReceiverDefault(HttpServletRequest request,@RequestParam("receiverId") String receiverId){
+		Map<String,Object> result = new HashMap<String,Object>();
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		receiverService.updateDefault(receiverId,user.getId());
+		result.put("success", true);
+		return result;
 	}
 }

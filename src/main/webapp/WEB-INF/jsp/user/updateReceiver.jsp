@@ -59,10 +59,21 @@ $(document).ready(function(){
 				required:"收货人街道楼层门牌号不能为空"
 			}
 		},
+		/* 重写错误显示消息方法,以alert方式弹出错误消息 */  
+		showErrors: function(errorMap, errorList) {  
+		    			var msg = "";  
+		            	$.each( errorList, function(i,v){  
+		            		
+		              		msg += (v.message+"\r\n");  
+		           		});  
+		      		if(msg!="") alert(msg);  
+		},  
+		/* 失去焦点时不验证
 	  	errorPlacement: function(error, element) {
- 				var span = $("<span class='icon errorinfo' />").append(error);
- 				span.appendTo(element.parent());
- 		}
+ 				alert(error);
+ 		} */   
+		onfocusout: false,
+		onkeyup:false
 		
 	});
 	

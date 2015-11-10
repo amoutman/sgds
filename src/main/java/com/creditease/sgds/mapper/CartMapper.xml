@@ -46,6 +46,17 @@
     	  #{productIds}
     	  </foreach>
 	</select>
+	<select id="getCartDetailsByProdcutId" parameterType="Map" resultType="com.creditease.sgds.cart.bean.CartDetails">
+		select a.id id,
+			   a.shopping_cart_id shoppingCartId,
+			   a.product_id productId,
+			   a.count count
+		  from tb_shopping_cart_details a,
+		       tb_shopping_cart b
+		 where a.shopping_cart_id = b.id
+		   and b.user_id = #{userId}
+		   and a.product_id = #{productId}  
+	</select>
     <insert id="insertCart" parameterType="com.creditease.sgds.cart.bean.Cart">
     	insert into tb_shopping_cart (id,user_id,settle_amount,created_date) values (#{id},#{userId},#{settleAmount},#{createdDate})
     </insert>
