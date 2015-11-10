@@ -241,7 +241,7 @@
     from tb_order a
     where a.created_by_id = #{userId,jdbcType=CHAR}
          <if test="status == 1">
-      		and (a.status == 1 or a.status == 2)
+      		and (a.status = 1 or a.status = 2)
       	 </if>
       	 <if test="status != 1">
       		and a.status = #{status,jdbcType=INTEGER}
@@ -250,9 +250,9 @@
   <select id="getOrderCountByParams" parameterType="Map" resultType="Integer">
   	select count(a.id)
     from tb_order a
-    where created_by_id = #{userId,jdbcType=CHAR}
+    where a.created_by_id = #{userId,jdbcType=CHAR}
       <if test="status == 1">
-      		and (a.status == 1 or a.status == 2)
+      		and (a.status = 1 or a.status = 2)
       	 </if>
       	 <if test="status != 1">
       		and a.status = #{status,jdbcType=INTEGER}

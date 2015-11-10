@@ -20,26 +20,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
 <script type="text/javascript">
 	function setDefaultAdd(obj){
-		var parents = $(obj).parents(".deliver-address");
-		if(parents.hasClass(".default-address")){
+		if($(obj).parent().parent().parent().hasClass("default-address")){
 			return;
 		}
 		var receiverId = $(obj).parent().find("#receiverId").val();
-		$.post{
-			"receiver/updateReceiverDefault",
+		$.post(
+			"updateReceiverDefault",
 			{
 				"receiverId":receiverId
 			},
 			function(data){
 				if(data["success"]){
 					$(".default-address").removeClass("default-address");
-					$(obj).parents(".deliver-address").addClass("default-address");
+					$(obj).parent().parent().parent().addClass("default-address");
 				}else{
 					alert(data["msg"]);
 				}
 			},
 			"json"
-		}
+		)
 	}
 </script>
 </head>
@@ -51,20 +50,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        		<c:if test="${receiver.masterOrNot == 0 }">
        			<div class="deliver-address default-address clearfix">
          			<div class="address-left">
-             			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 0 }">先生</c:if><c:if test="${receiver.receiverSex == 1}">女士</c:if>）  ${receiver.receiverMobile }</div>
+             			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 1 }">先生</c:if><c:if test="${receiver.receiverSex == 0}">女士</c:if>）  ${receiver.receiverMobile }</div>
              			<div class="address-info">${receiver.receiverAddress }</div>
          			</div>
-         		<div class="address-edit">
-          		    <a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
-           			<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
-         		</div>
+         			<div class="address-edit">
+          		    	<a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>
+           				<span class="set-default"><input type="hidden" name="receiverId" id="receiverId" value="${receiver.id}"/><a href="javascript:void(0);" onClick="setDefaultAdd(this)">设为默认地址</a></span>
+         			</div>
       			</div>
        		</c:if>
        		<c:if test="${receiver.masterOrNot == 1 }">
        		    <div class="deliver-address clearfix">
          			<div class="address-left">
-            			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 0 }">先生</c:if><c:if test="${receiver.receiverSex == 1}">女士</c:if>）  ${receiver.receiverMobile }</div>
-             			<div class="address-info">${receiver.receiverAddress }</div>
+            			<div class="address-info">${receiver.receiverName }（<c:if test="${receiver.receiverSex == 1 }">先生</c:if><c:if test="${receiver.receiverSex == 0}">女士</c:if>）  ${receiver.receiverMobile }</div>
+             			<div class="address-info">${receiver.receiverProvince } ${receiver.receiverRegion } ${receiver.receiverAddress }</div>
          			</div>
          			<div class="address-edit">
            				<a href="${pageContext.request.contextPath}/receiver/toUpdateReceiver?receiverId=${receiver.id}" class="btnEdit"></a>

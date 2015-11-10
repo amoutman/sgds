@@ -19,6 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.9.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/jquery.slides.min.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/center.js"></script>
 </head>
 <body>
 <section class="bgGrey clearfix mb110">
@@ -88,9 +89,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
              </span>
              </a>
              <a href="javascript:void(0);" onClick="addProductToCart()" class="btnYello">加入购物车</a>
-             <a href="" class="btnPink">立即购买</a>
+             <a href="javascript:void(0);" onClick="toBuyProduct()" class="btnPink" id="buyBtn">立即购买</a>
           </div>
     <!-- 按钮 end -->
+    
+     <!-- 登录弹窗 start -->
+	  	<div class="popbox" id="popbox-login" style="z-index:9999;">
+        <div class="closeDiv"><a href="#" class="close-btn" id="close-btn-login" onClick="closeLogin()">x</a></div>
+		<section class="clearfix">
+        <div class="errcom">
+       <div class="errinfo" style="display:none;">
+                    <p><i><img src="images/icon_erro.png"></i> 请输入正确的手机号</p>
+                    <span class="greybg"></span>
+                </div>
+        </div>
+       <div class="com">
+			<div class="com-left">账号：</div>
+			<div class="com-right">
+				<input type="text" id="userName" placeholder="请输入您的账号 "/>
+			</div>
+		</div>
+        <div class="line"></div>
+		<div class="com">
+			<div class="com-left">密码：</div>
+			<div class="com-right">
+				<input type="password" id="password" class="fl" placeholder="请输入您的密码">
+			</div>
+            
+		</div>
+	</section>
+    <div class="login-bottom">	
+        <button onClick="login()">登录</button>
+        <p><a href="javascript:void(0);"  class="fr">忘记密码</a> <a href="">注册</a>  </p>
+    </div>
+	</div>
+   <!-- 登录弹窗 end -->
+   <form action="${pageContext.request.contextPath}/order/orderConfirm" id="orderConfirmForm" method="post">
+   		<input type="hidden" name="productIds" id="productIds"/>
+   </form>
 </body>
 <script>
 $(function() {
@@ -129,6 +165,71 @@ function addCartNum(){
 		num = Number(cartNum) + 1;
 	}
 	$("#cartNum").html(""+num);
+}
+
+function login(){
+	var userName = $("#userName").val();
+	var password = $("#password").val();
+	$.post(
+		"${pageContext.request.contextPath}/cart/toLogin",
+		{
+			"userName":userName,
+			"password":password
+		},
+		function(data){
+			if(data["success"]){
+				toOrder();
+			}else{
+				alert("用户名或密码错误");
+			}
+		},
+		"json"
+	)
+}
+
+function toBuyProduct(){
+	var productIds = $("#productId").val();
+	if(productIds!=""){
+		$.post(
+			"${pageContext.request.contextPath}/cart/toBuyProduct",
+			function(data){
+				if(data["success"]){
+					toOrder();
+				}else{
+					showLogin('popbox-login');
+				}
+			},
+			"json"
+		)
+	}else{
+		alert("请选择需要购买的商品");
+	}
+}
+
+function toOrder(){
+	var productIds = $("#productId").val();
+	if(productIds!=""){
+		$("#productIds").val(productIds);
+		$("#orderConfirmForm").submit();
+	}
+}
+
+$(function(){
+	// 登录弹窗 tickbox('close-btn-login','popbox-login','buyBtn');	
+	
+});	
+
+function closeLogin(){
+	$('#popbox-login').fadeOut();
+	return false;
+}
+
+function showLogin(boxID){
+	var h = $(document).height();
+	$('#'+boxID+'').css({ 'min-height': h });	
+	$('#'+boxID+'').center();
+	$('#'+boxID+'').fadeIn();
+	return false;
 }
 </script>
 </html>

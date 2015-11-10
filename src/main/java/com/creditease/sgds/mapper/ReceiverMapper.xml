@@ -17,7 +17,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_id, receiver_name, receiver_sex, receiver_mobile, receiver_province, receiver_region, 
-    receiver_address, note, master_or_not, created_date, updated_date
+    receiver_address, note, master_or_not, created_date
   </sql>
   <select id="getReceiverById" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

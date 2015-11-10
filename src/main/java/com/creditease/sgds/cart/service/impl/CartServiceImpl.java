@@ -77,5 +77,9 @@ public class CartServiceImpl implements CartService {
 	public List<CartDetails> getCartDetailsListByProdcutIds(String cartId, List<String> productIds) {
 		return cartMapper.getCartDetailsListByProdcutIds(cartId, productIds);
 	}
+	
+	public CartDetails getCartDetailsByProdcutId(Map<String,Object> cdMap){
+		return cartMapper.getCartDetailsByProdcutId(cdMap);
+	}
 
 }

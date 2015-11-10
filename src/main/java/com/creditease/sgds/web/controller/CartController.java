@@ -58,17 +58,16 @@ public class CartController {
 		}*/
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		Cart cart = null;
+		List<CartDetails> cdList = new ArrayList<CartDetails>();
 		//Receiver receiver = null;
 		if(user != null){
 			cart = cartService.getCartById(user.getId());
-			cart.setUpdatedDate(new Date());
-			//查询默认收货地址
-			//receiver = receiverService.getReceiverByUserId(user.getId());
+			Map<String,Object> cdMap = new HashMap<String,Object>();
+			cdMap.put("cartId", cart.getId());
+			cdList = cartService.getCartDetailsList(cdMap);
 		}else{
 			cart = new Cart();
-			//receiver = new Receiver();
 		}
-		//mv.addObject("receiver", receiver);
 		Cookie cookie = getCookieByName(request,"productId");
 		//Cookie numCookie = getCookieByName(request,productId);
 		if(cookie == null){
@@ -87,13 +86,11 @@ public class CartController {
 			
 			BigDecimal settleAmount = new BigDecimal(0);
 			CartDetails cd = null;
-			List<CartDetails> cdList = new ArrayList<CartDetails>();
-			if(cart.getCdList() != null){
-				cdList.addAll(cart.getCdList());
-			}
-			
+			List<CartDetails> insertCdList = new ArrayList<CartDetails>();
+
 			if(productList.size()>0){
 				for(Product p:productList){
+					int flag = 0;
 					cd = new CartDetails();
 					//获取cookie中每个商品的数量
 					Cookie numCookie = getCookieByName(request,p.getId());
@@ -102,26 +99,31 @@ public class CartController {
 						count = Integer.parseInt(numCookie.getValue());
 					}
 					
-					cd.setId(PKIDUtils.getUuid());
-					cd.setShoppingCartId(cart.getId());
-					cd.setProductId(p.getId());
-					cd.setProductName(p.getProductName());
-					cd.setProductMasterPic(p.getProductMasterPicPath());
-					cd.setUnit(p.getUnit());
-					cd.setPrice(p.getPrice());
-					cd.setCount(count);
-					BigDecimal pAmount = new BigDecimal(0);
-					pAmount = p.getPrice().multiply(new BigDecimal(count)); 
-					settleAmount = settleAmount.add(pAmount);
-					cdList.add(cd);
+					if(!cdList.isEmpty()){
+						for(CartDetails cds:cdList){
+							if(cds.getProductId().equals(p.getId())){
+								flag = 1;
+								break;
+							}
+						}
+						
+					}
+					if(flag == 0){
+						cd.setShoppingCartId(cart.getId());
+						cd.setProductId(p.getId());
+						cd.setProductName(p.getProductName());
+						cd.setProductMasterPic(p.getProductMasterPicPath());
+						cd.setUnit(p.getUnit());
+						cd.setPrice(p.getPrice());
+						cd.setCount(count);
+						BigDecimal pAmount = new BigDecimal(0);
+						pAmount = p.getPrice().multiply(new BigDecimal(count)); 
+						settleAmount = settleAmount.add(pAmount);
+						insertCdList.add(cd);
+					}
 				}
-				cart.setSettleAmount(settleAmount);
+				cdList.addAll(insertCdList);
 				cart.setCdList(cdList);
-			}
-			if(user != null){
-				//将购物车数据插入数据库
-				cartService.updateCart(cart);
-				cartService.insertCartDetailsList(cdList);
 			}
 			
 			mv.addObject("cart", cart);
@@ -132,6 +134,21 @@ public class CartController {
 	
 	@RequestMapping("/toAddProductToCart")
 	public void addProductToCart(HttpServletRequest request,HttpServletResponse response, @RequestParam("productId") String productId){
+		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
+		CartDetails cd = null;
+		Cart cart = null;
+		//Receiver receiver = null;
+		if(user == null){
+			cd = new CartDetails();
+		}else{
+			Map<String,Object> 	cdMap = new HashMap<String,Object>();
+			cdMap.put("userId", user.getId());
+			cdMap.put("productId", productId);
+			cd = cartService.getCartDetailsByProdcutId(cdMap);
+			
+			cart = cartService.getCartById(user.getId());
+			cart.setUpdatedDate(new Date());
+		}
 		Cookie cookie = null;
 		cookie = getCookieByName(request,"productId");
 		Cookie numCookie = getCookieByName(request,productId);
@@ -157,6 +174,20 @@ public class CartController {
 				newCookie = cookie;
 			}
 		}
+		if(user != null){
+			if(cd == null){
+				CartDetails saveCd = new CartDetails();
+				saveCd.setId(PKIDUtils.getUuid());
+				saveCd.setProductId(productId);
+				saveCd.setShoppingCartId(cart.getId());
+				saveCd.setCount(1);
+				cartService.insertCartDetails(saveCd);
+			}else{
+				cd.setCount(cd.getCount()+1);
+				cartService.updateCartDetails(cd);
+			}
+		}
+		
 		newCookie.setMaxAge(3600);
 		newNumCookie.setMaxAge(3600);
 		response.addCookie(newCookie);
@@ -164,6 +195,7 @@ public class CartController {
 	}
 	
 	@RequestMapping(value = "/deleteProductFromCart", method = RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> deleteProductFromCart(HttpServletRequest request,HttpServletResponse response, @RequestParam("cdIds") String cdIds,@RequestParam("productIds") String productIds){
 		Map<String,Object> result = new HashMap<String,Object>();
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
@@ -181,7 +213,6 @@ public class CartController {
 				for(int i=0;i<pdIdList.size();i++){
 					StringBuffer sb = new StringBuffer(newPIds);
 					int idIndex = newPIds.indexOf(pdIdList.get(i));
-					System.out.println("------------"+idIndex);
 					if(idIndex == 0){
 						sb.delete(0, pdIdList.get(i).length());
 					}else if(idIndex >= 1){
@@ -203,6 +234,7 @@ public class CartController {
 			}
 			response.addCookie(newCookie);
 		}
+		System.out.println("------------");
 		result.put("success", true);
 		return result;
 	}
@@ -246,6 +278,7 @@ public class CartController {
 		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
 		if(user != null){
 			resultMap.put("success", true);
+			insertCartDB(request);
 		}else{
 			resultMap.put("success", false);
 		}
@@ -262,56 +295,10 @@ public class CartController {
 				resultMap.put("success", false); 
 			}else{
 				request.getSession().setAttribute(GlobalPara.USER_SESSION_TOKEN, user);
-				resultMap.put("success", true);
-				Cart cart = cartService.getCartById(user.getId());
-				cart.setUpdatedDate(new Date());
-				Cookie cookie = getCookieByName(request,"productId");
-				//根据Cookie中的productId查询出商品详细列表
-				String productIds = cookie.getValue();
-				//String[] pdStr = productIds.split(",");
-				List<String> pdList = strArrayToList(productIds);
-				//for(int i=0;i<productIds.length();i++){
-					//pdList.add(pdStr[i]);
-				//}
-				
-				List<Product> productList = productService.getProductDetailsByIds(pdList);
-				
-				BigDecimal settleAmount = new BigDecimal(0);
-				CartDetails cd = null;
-				List<CartDetails> cdList = new ArrayList<CartDetails>();
-				if(cart.getCdList().size()>0){
-					cdList.addAll(cart.getCdList());
-				}
-				
-				if(productList.size()>0){
-					for(Product p:productList){
-						cd = new CartDetails();
-						//获取cookie中每个商品的数量
-						Cookie numCookie = getCookieByName(request,p.getId());
-						int count = Integer.parseInt(numCookie.getValue());
-						
-						cd.setId(PKIDUtils.getUuid());
-						cd.setShoppingCartId(cart.getId());
-						cd.setProductId(p.getId());
-						cd.setProductName(p.getProductName());
-						cd.setProductMasterPic(p.getProductDetailsMasterPicPath());
-						cd.setUnit(p.getUnit());
-						cd.setPrice(p.getPrice());
-						cd.setCount(count);
-						BigDecimal pAmount = new BigDecimal(0);
-						pAmount = p.getPrice().multiply(new BigDecimal(count)); 
-						settleAmount = settleAmount.add(pAmount);
-						cdList.add(cd);
-					}
-					cart.setSettleAmount(settleAmount);
-					cart.setCdList(cdList);
-					cartService.updateCart(cart);
-					cartService.insertCartDetailsList(cdList);
-				}
+				insertCartDB(request);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Map<String,String> map = new HashMap<String,String>();
 			resultMap.put("success",GlobalPara.AJAX_FALSE);
 			resultMap.put("result", "系统登录出错，请重试！");
 		}
@@ -320,6 +307,70 @@ public class CartController {
 		
 		
 		return resultMap;
+	}
+	
+	public void insertCartDB(HttpServletRequest request){
+		User user = (User)request.getSession().getAttribute(GlobalPara.USER_SESSION_TOKEN);
+		request.getSession().setAttribute(GlobalPara.USER_SESSION_TOKEN, user);
+		
+		Cart cart = cartService.getCartById(user.getId());
+		cart.setUpdatedDate(new Date());
+		
+		Map<String,Object> cdMap = new HashMap<String,Object>();
+		cdMap.put("cartId", cart.getId());
+		List<CartDetails> cdList = cartService.getCartDetailsList(cdMap);
+		
+		Cookie cookie = getCookieByName(request,"productId");
+		//根据Cookie中的productId查询出商品详细列表
+		String productIds = cookie.getValue();
+		
+		List<String> pdList = strArrayToList(productIds);
+
+		List<Product> productList = productService.getProductDetailsByIds(pdList);
+		
+		BigDecimal settleAmount = new BigDecimal(0);
+		CartDetails cd = null;
+		
+		List<CartDetails> insertCdList = new ArrayList<CartDetails>();
+		if(productList.size()>0){
+			for(Product p:productList){
+				cd = new CartDetails();
+				int flag=0;
+				//获取cookie中每个商品的数量
+				Cookie numCookie = getCookieByName(request,p.getId());
+				int count = Integer.parseInt(numCookie.getValue());
+				
+				if(!cdList.isEmpty()){
+					for(CartDetails cds:cdList){
+						if(cds.getProductId().equals(p.getId())){
+							flag = 1;
+							break;
+						}
+					}
+					
+				}
+				if(flag == 0){
+					cd.setId(PKIDUtils.getUuid());
+					cd.setShoppingCartId(cart.getId());
+					cd.setProductId(p.getId());
+					cd.setProductName(p.getProductName());
+					cd.setProductMasterPic(p.getProductDetailsMasterPicPath());
+					cd.setUnit(p.getUnit());
+					cd.setPrice(p.getPrice());
+					cd.setCount(count);
+					BigDecimal pAmount = new BigDecimal(0);
+					pAmount = p.getPrice().multiply(new BigDecimal(count)); 
+					settleAmount = settleAmount.add(pAmount);
+					insertCdList.add(cd);
+				}
+			}
+			//cart.setSettleAmount(settleAmount);
+			//cart.setCdList(cdList);
+			//cartService.updateCart(cart);
+			if(!insertCdList.isEmpty()){
+				cartService.insertCartDetailsList(insertCdList);
+			}
+		}
 	}
 	
 	public static Cookie getCookieByName(HttpServletRequest request,String name){

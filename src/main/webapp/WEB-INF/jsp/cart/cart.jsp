@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <section class="bgGrey mb210 clearfix">
       <div class="orderbar">
             <div class="checkbox fr">
-			<label>全选</label><i class="ico-checkbox"></i>
+			<label>全选</label><i class="ico-checkbox" onClick="allCheck(this)"></i>
 			</div>
             <h2>购物车</h2>
       </div>
@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <div class="checkbox fr">
                        		<input type="hidden" name="productId" id="productId" value="${cd.productId }"/>
                 		 	<input type="hidden" name="cdId" id="cdId" value="${cd.id}"/>
-                       		<i class="ico-checkbox" name="isCheck"></i>
+                       		<i class="ico-checkbox" name="isCheck" onClick="check(this)"></i>
 			          	</div>
                    </div>
                    <div class="cart-bar">
@@ -63,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                          <input type="hidden" name="productId" id="productId" value="${cd.productId }"/>
                 		 <input type="hidden" name="cdId" id="cdId" value="${cd.id}"/>
                 		 <input type="hidden" name="price" id="price" value="${cd.price}"/>
-                         <input type="text" value="${cd.count }" class="num-input" id="count">
+                         <input type="text" value="${cd.count }" class="num-input" id="count" name="count">
                          <a href="javascript:void(0);" onClick="addCount(this)" class="num-math pull-right" opr="jia"><i>+</i></a>
                       </div>
                       
@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
              <a href="" class="btnPrice"> 
                   <span class="label">总价：</span>
                   <span class="price-sign">¥</span>
-                  <span class="price-num" id="totalAmount">${cart.settleAmount}</span>
+                  <span class="price-num" id="totalAmount">0.00</span>
                   <span class="line"></span>
              </a>
              <a href="javascript:void(0);" class="btnDelete" onClick="deleteProduct()">删  除</a>
@@ -119,14 +119,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <div class="com">
 			<div class="com-left">账号：</div>
 			<div class="com-right">
-				<input type="text" placeholder="请输入您的账号 "/>
+				<input type="text" id="userName" placeholder="请输入您的账号 "/>
 			</div>
 		</div>
         <div class="line"></div>
 		<div class="com">
 			<div class="com-left">密码：</div>
 			<div class="com-right">
-				<input type="password" class="fl" placeholder="请输入您的密码">
+				<input type="password" id="password" class="fl" placeholder="请输入您的密码">
 			</div>
             
 		</div>
@@ -161,23 +161,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			}
 		});
-		if(confirm("确定要删除这些商品？")){
-			$.post(
-				"deleteProductFromCart",
-				{
-					"productIds":productIds,
-					"cdIds":cdIds
-				},
-				function(data){
-					if(data["success"]){
-						$("i[name='isCheck']").each(function(){
-							$(this).parents(".ware-item").html("");
-						});
-					}
-				},
-				"json"
-				)
-			}
+		if(productIds!=""){
+			if(confirm("确定要删除这些商品？")){
+				$.post(
+					"deleteProductFromCart",
+					{
+						"productIds":productIds,
+						"cdIds":cdIds
+					},
+					function(data){
+						if(data["success"]){
+							$("i[name='isCheck']").each(function(){
+								if($(this).hasClass("checked") == true)
+									$(this).parent().parent().parent().parent().html(" ");
+							});
+							$(".ico-checkbox").removeClass("checked");
+						}
+					},
+					"json"
+					)
+				}
+		}
+		
 	}
 	
 	function addCount(obj){
@@ -188,6 +193,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var price = $(obj).parent().find("#price").val();
 		var totalAmount = $("#totalAmount").html();
 		var newAmount = (Number(totalAmount)+Number(price)).toFixed(2);
+		var newAmount = 0;
+		var isCheck = $(obj).parent().parent().parent().find("i[name='isCheck']");
+		if(isCheck.hasClass("checked")){
+			newAmount = (Number(totalAmount)+Number(price)).toFixed(2);
+		}else{
+			var productAmount = (Number(aCount)*Number(price)).toFixed(2);
+			newAmount = (Number(totalAmount)+Number(productAmount)).toFixed(2)
+		}
 		$.post(
 			"calProductCount",
 			{
@@ -199,6 +212,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			function(data){
 				if(data["success"]){
 					$(obj).parent().find("#count").val(aCount);
+					if(!isCheck.hasClass("checked")){
+						isCheck.addClass("checked");
+					}
 					$("#totalAmount").html(newAmount);
 				}
 			},
@@ -218,7 +234,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var productId = $(obj).parent().find("#productId").val();
 			var price = $(obj).parent().find("#price").val();
 			var totalAmount = $("#totalAmount").html();
-			var newAmount = (Number(totalAmount)-Number(price)).toFixed(2);
+			var newAmount = 0;
+			var isCheck = $(obj).parent().parent().parent().find("i[name='isCheck']");
+			if(isCheck.hasClass("checked")){
+				newAmount = (Number(totalAmount)-Number(price)).toFixed(2);
+			}else{
+				var productAmount = (Number(aCount)*Number(price)).toFixed(2);
+				newAmount = (Number(totalAmount)+Number(productAmount)).toFixed(2)
+			}
 			$.post(
 				"calProductCount",
 				{
@@ -230,6 +253,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				function(data){
 					if(data["success"]){
 						$(obj).parent().find("#count").val(aCount);
+						if(!isCheck.hasClass("checked")){
+							isCheck.addClass("checked");
+						}
 						$("#totalAmount").html(newAmount);
 					}
 				},
@@ -240,10 +266,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 	}
 	
+	function check(obj){
+		var price = $(obj).parent().parent().parent().find("input[name='price']").val();
+		var thisCount = $(obj).parent().parent().parent().find("input[name='count']").val();
+	
+		var productAmount = (Number(price)*Number(thisCount)).toFixed(2);
+		var totalAmount = $("#totalAmount").html();
+		var newAmount = 0
+		if($(obj).hasClass("checked")){
+			newAmount = (Number(totalAmount)-Number(productAmount)).toFixed(2);
+		}else{
+			newAmount = (Number(totalAmount)+Number(productAmount)).toFixed(2);
+		}
+		 
+		$("#totalAmount").html(newAmount);
+	}
+	
+	function allCheck(obj){
+		$(obj).toggleClass("checked");
+		var allChecked = true;
+		var totalAmount = 0
+		$("i[name='isCheck']").each(function(){
+			if($(this).hasClass("checked") == false){
+				allChecked = false;
+			}
+			var price = $(this).parent().parent().parent().find("input[name='price']").val();
+			var thisCount = $(this).parent().parent().parent().find("input[name='count']").val();
+			var productAmount = (Number(price)*Number(thisCount)).toFixed(2);
+			totalAmount = (Number(totalAmount)+Number(productAmount)).toFixed(2);
+		});
+		if(allChecked == true){
+			$(".ico-checkbox").addClass("checked");
+			$("#totalAmount").html("0.00");
+		}else{
+			$(".ico-checkbox").removeClass("checked");
+			$("#totalAmount").html(totalAmount);
+		}
+	}
+	
 	function login(){
 		var userName = $("#userName").val();
-		var passworde = $("#password").val();
-		
+		var password = $("#password").val();
 		$.post(
 			"toLogin",
 			{
@@ -262,17 +325,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function toBuyProduct(){
-		$.post(
-			"toBuyProduct",
-			function(data){
-				if(data["success"]){
-					toOrder();
+		var productIds = "";
+		$("i[name='isCheck']").each(function(){
+			if($(this).hasClass("checked") == true){
+				if(productIds == ""){
+					productIds = $(this).parent().find("#productId").val();
 				}else{
-					showLogin('popbox-login');
+					productIds = productIds +"," +$(this).parent().find("#productId").val();
 				}
-			},
-			"json"
-		)
+			}
+		});
+		if(productIds!=""){
+			$.post(
+				"toBuyProduct",
+				function(data){
+					if(data["success"]){
+						toOrder();
+					}else{
+						showLogin('popbox-login');
+					}
+				},
+				"json"
+			)
+		}else{
+			alert("请选择需要购买的商品");
+		}
 	}
 	
 	function toOrder(){
@@ -286,8 +363,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$("#productIds").val(productIds);
-		$("#orderConfirmForm").submit();
+		
+		if(productIds!=""){
+			$("#productIds").val(productIds);
+			$("#orderConfirmForm").submit();
+		}
 	}
 	
 	$(function(){
